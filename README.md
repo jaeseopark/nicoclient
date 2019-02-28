@@ -2,6 +2,15 @@
 
 A python client to interact with [nicovideo.jp](https://nicovideo.jp).
 
-## Uploading the distribution archives
+This client uses other existing clients such as `nicopy`, and offers a few new features as well.
 
-See [Python Packaging User Guide](https://packaging.python.org/tutorials/packaging-projects/)
+## Packaging for Pypi
+
+```bash
+python3 setup.py sdist bdist_wheel
+
+# Test distribution
+python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+# TBD: Real distribution
+```
