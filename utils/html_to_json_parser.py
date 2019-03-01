@@ -1,7 +1,7 @@
-# http://www.xavierdupre.fr/blog/2013-10-27_nojs.html
-
 from html.parser import HTMLParser
 
+
+# http://www.xavierdupre.fr/blog/2013-10-27_nojs.html
 
 class HTMLtoJSONParser(HTMLParser):
     def __init__(self, raise_exception=True):

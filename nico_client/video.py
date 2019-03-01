@@ -15,6 +15,8 @@ class Video:
             raise AssertionError("'video_id' or 'url' needed.")
         self.views = views
         self.likes = likes
+        self.thumbnail_url = None
+        self.title = None
 
     def __str__(self):
         return json.dumps(self.__dict__)
