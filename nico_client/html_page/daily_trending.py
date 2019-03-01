@@ -1,6 +1,6 @@
 from nico_client.html_page import HtmlPage
+from nico_client.html_page.html_to_json_parser import HTMLtoJSONParser
 from nico_client.video import Video
-from utils.html_to_json_parser import HTMLtoJSONParser
 
 
 class DailyTrending(HtmlPage):
