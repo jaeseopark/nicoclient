@@ -12,5 +12,5 @@ python3 setup.py sdist bdist_wheel
 python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 # Real distribution
-python3 -m twine dist/*
+python3 -m twine upload dist/*
 ```
