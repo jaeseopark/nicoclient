@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+  <head prefix="og: http://ogp.me/ns#">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="copyright" content="&copy; DWANGO Co., Ltd.">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <meta property="og:title" content="niconico">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="niconicoはドワンゴが運営する日本最大級の動画サービスです。ニコニコ動画やニコニコ生放送、ニコニコ静画など、ゲームや音楽、エンターテイメントは全てniconicoで！">
+    <meta property="og:url" content="https://www.nicovideo.jp/">
+    <meta property="og:image" content="https://account.nicovideo.jp/assets/images/ogp/niconico.png">
+    <meta property="og:site_name" content="niconico">
+    <title>
+      ログイン - niconico</title>
+
+      <link rel="stylesheet" href="/assets/public/css/login/login_form.css">
+
+    <link rel="shortcut icon" type="image/ico" href="/assets/public/img/base/favicon.ico">
+
+
+    <script>var NicoGoogleTagManagerDataLayer = [{"user":{"user_id":null,"login_status":"not_login","member_status":null,"birthday":null,"sex":null,"country":null,"prefecture":null,"account_create_datetime":null,"premium_register_datetime":null,"premium_unregister_datetime":null},"content":{"player_type":null,"deliverty":null,"category":null,"content_type":null}}];</script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','NicoGoogleTagManagerDataLayer','GTM-KXT7G5G');</script>
+    <!-- End Google Tag Manager -->
+
+
+      <script type="text/javascript" charset="utf-8" src="https://ads.nicovideo.jp/assets/js/ads-2.20.0.min.js"></script>
+
+    <script src="/assets/public/js/lib/fingerprint.js" type="text/javascript"></script>
+    <script src="/assets/public/js/lib/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="/assets/public/js/lib/html5shiv.min.js" type="text/javascript"></script>
+    <script src="/assets/public/js/login/ui.js" type="text/javascript"></script>
+    <script src="/assets/public/js/api-client.js" type="text/javascript"></script>
+  </head>
+  <body class="ja-jp">
+
+  <header role="banner" class="header">
+
+    <h1 class="header__title">
+        <a href="https://www.nicovideo.jp/">
+            <img src="/assets/images/logo/logo_niconico.png" alt="niconico">
+        </a>
+    </h1>
+
+  </header>
+  <div class="contents">
+    <div role="main" class="main ins__ads login">
+      <header class="contents-header border-around">
+        <h1 class="contents-header__title">ログイン</h1>
+      </header>
+
+
+
+      <div class="contents-body">
+
+
+
+          <div class="row form-group border-around login-form round border-em-around shadow-around">
+
+<form action="/api/v1/login?show_button_twitter=1&site=niconico&show_button_facebook=1&mail_or_tel=1" method="POST" id="login_form">
+
+              <p class="input-group">
+                <label class="input-group__label">メールアドレスまたは電話番号</label>
+                <input id="input__mailtel" type="text" name="mail_tel" value="">
+              </p>
+              <p class="input-group neighbor">
+                <label class="input-group__label">パスワード</label>
+                <input id="input__password" type="password" name="password">
+              </p>
+              <p class="button-wrap neighbor">
+                <input id="login__submit" type="submit" value="ログイン" class="button button-primary round shadow-around">
+              </p>
+
+</form>
+
+
+              <p class="text-muted">パスワードを忘れた方は<a href="/password/reset" class="text-link">再発行の手続き</a>へ</p>
+
+          </div>
+
+
+
+            <div class="row sns-group">
+
+                <p class="text-description">下記サービスアカウントでのログインはこちら</p>
+
+              <div class="button-wrap">
+
+                <p class="button-container"><a href="/login/linkages/twitter/authorize?site=niconico" class="button btn-tw" id="twitter__login" title="Twitterでログイン">Twitterでログイン</a></p>
+
+
+                <p class="button-container"><a href="/login/linkages/facebook/authorize?site=niconico" class="button btn-fb" id="facebook__login" title="Facebookでログイン">Facebookでログイン</a></p>
+
+
+                <p class="button-container"><a href="/login/linkages/line/authorize?site=niconico" class="button btn-line" id="line__login" title="LINEでログイン">LINEでログイン</a></p>
+
+
+                <p class="button-container"><a href="/login/linkages/google_plus/authorize?site=niconico" class="button btn-google" id="google_plus__login" title="Googleでログイン">Googleでログイン</a></p>
+
+
+                <p class="button-container"><a href="/login/linkages/yahoo/authorize?site=niconico" class="button btn-yahoo" id="yahoo__login" title="Yahoo! JAPAN IDでログイン">Yahoo! JAPAN IDでログイン</a></p>
+
+
+
+                <p class="button-container"><a href="/login/linkages/nintendo/authorize?site=niconico" class="button btn-nnid" id="nnid__login" title="ニンテンドーネットワークIDでログイン">ニンテンドーネットワークIDでログイン</a></p>
+
+
+                <p class="button-container"><a href="/login/linkages/nintendo_account/authorize?site=niconico" class="button btn-nintendo-account" id="nintendo_account__login" title="ニンテンドーアカウントでログイン">ニンテンドーアカウントでログイン</a></p>
+
+              </div>
+            </div>
+
+          <div class="row signup">
+            <p class="button-wrap">
+              <a href="/register?site=niconico&from=login" class="button button-signup round weight shadow-around">
+                <span>はじめての方は登録手続きへお進みください。</span>
+                <span class="text-button">新規会員登録</span>
+              </a>
+            </p>
+          </div>
+
+
+
+          <div class="row ads" id="ads">
+
+
+              <script type="text/javascript">
+                Ads.loaderInterval = 0;
+                new Ads.Advertisement({
+                  zone: 124
+                }).set('ads');
+              </script>
+
+          </div>
+
+
+      </div>
+    </div>
+  </div>
+
+<footer class="footer" role="contentinfo">
+  <div class="inner">
+    <p class="copyright"><small>&copy; DWANGO Co., Ltd.</small></p>
+  </div>
+</footer>
+
+
+
+    <div class="ext-container">
+
+<style>
+/*{literal}*/
+#lang_switcher,
+#lang_control {position:relative; display:inline-block; /display:inline; /zoom:1; vertical-align:top;}
+#lang_control {padding:20px 0;}
+#lang_switcher #lang_current { display:block; cursor:pointer; text-decoration:underline; font-weight:bold;
+    -moz-border-radius-topleft:5px;-moz-border-radius-topright:5px;
+    border-top-right-radius:5px;border-top-left-radius:5px;
+}
+#lang_switcher #lang_lineup { position:absolute; width:280px; padding:5px; margin:0 -5px -5px;
+    -moz-border-radius-bottomleft:5px;-moz-border-radius-bottomright:5px;-moz-border-radius-topright:5px;
+    border-bottom-left-radius:5px;border-top-right-radius:5px;border-bottom-right-radius:5px;
+    -moz-box-shadow:0 2px 2px rgba(0,0,0,0.25); box-shadow:0 2px 2px rgba(0,0,0,0.25);
+}
+#lang_switcher #lang_lineup ul {margin:0;padding:0; text-align:left;}
+#lang_switcher #lang_lineup li {
+    display:inline-block; /display:inline; /zoom:1;
+    width:80px; margin:0; padding:5px; cursor:pointer;
+    -moz-border-radius:4px; border-radius:4px;
+}
+#lang_switcher #lang_lineup a {
+    color:#ddd;
+}
+#lang_switcher #lang_lineup a:hover {
+    color:#fff;
+}
+
+#lang_switcher.expanded #lang_current { background:#357; color:#fff;
+    padding:5px; margin:-5px; text-decoration:none;
+}
+#lang_switcher.expanded #lang_lineup { background:#357; color:#fff; }
+#lang_switcher.expanded #lang_lineup li:hover {background:#123;}
+/*{/literal}*/
+</style>
+
+<div id="lang_control">
+
+    Language :
+  <div id="lang_switcher">
+    <span id="lang_current">日本語</span>
+    <div id="lang_lineup" style="display:none">
+      <ul>
+        <li><a href="/login?site=niconico" data-lang="ja-jp">日本語</a></li>
+        <li><a href="/login?site=niconico" data-lang="en-us">English (US)</a></li>
+        <li><a href="/login?site=niconico" data-lang="zh-tw">中文 (繁體)</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+/*{literal}*/
+var langControl = {
+    //関係要素
+    elem : {
+        lang_switcher : jQuery("#lang_switcher"),
+        lang_current  : jQuery("#lang_current"),
+        lang_lineup   : jQuery("#lang_lineup")
+    },
+    //初期化(すぐ下で実行されます)
+    init : function(){
+        this.elem.lang_current.click(function(){
+            langControl.toggle();
+        });
+        this.elem.lang_lineup.find("a").click(function () {
+            var expire = new Date();
+            expire.setTime(expire.getTime() + 30*24*60*60*1000);
+
+            document.cookie = [
+                "lang=" + jQuery(this).attr("data-lang"),
+                "expires=" + expire.toGMTString(),
+                "domain=nicovideo.jp",
+                "path=/"
+            ].join("; ");
+        });
+    },
+    //言語一覧の表示/非表示
+    toggle : function(){
+        if(this.elem.lang_switcher.hasClass("expanded")){
+            this.elem.lang_lineup.hide();
+            this.elem.lang_switcher.removeClass("expanded");
+            jQuery("body").unbind("click");
+        }else{
+            this.elem.lang_lineup.show();
+            this.elem.lang_switcher.addClass("expanded")
+            setTimeout(function(){
+            jQuery("body").click(function(event){
+                if(jQuery(event.target).closest("#lang_switcher").size()>=1){
+                }else{
+                    langControl.toggle();
+                    jQuery("body").unbind("click");
+                }
+            });
+            },100);
+        }
+    }
+};
+langControl.init();
+/*{/literal}*/
+</script>
+
+    </div>
+
+  <script>
+  $(function(){
+    $('<input>').attr({
+      type: 'hidden',
+
+      name: 'auth_id',
+      value: new Fingerprint({canvas: true}).get(),
+    }).appendTo($('#login_form'));
+  });
+  </script>
+
+  </body>
+</html>

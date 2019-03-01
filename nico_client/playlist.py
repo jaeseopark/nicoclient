@@ -1,0 +1,2 @@
+class Playlist(dict):
+    pass
