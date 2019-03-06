@@ -17,9 +17,20 @@ class HTMLtoJSONParser(HTMLParser):
         return self.doc
 
     @staticmethod
-    def to_json(content, raise_exception=True):
+    def to_json(content, raise_exception=False):
+        def recursive_clean(node):
+            if isinstance(node, list):
+                for child in node:
+                    recursive_clean(child)
+            elif isinstance(node, dict):
+                if '__parent__' in node:
+                    del node['__parent__']
+                for child in node.values():
+                    recursive_clean(child)
+
         parser = HTMLtoJSONParser(raise_exception=raise_exception)
         parser.feed(content)
+        recursive_clean(parser.json)
         return parser.json
 
     def handle_starttag(self, tag, attrs):
