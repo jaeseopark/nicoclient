@@ -4,6 +4,12 @@ from nico_client.video import Video
 
 
 class DailyTrending(HtmlPage):
+    def __init__(self, html_string=None):
+        if html_string:
+            HtmlPage.__init__(self, html_string=html_string)
+        else:
+            HtmlPage.__init__(self, url="https://www.nicovideo.jp/ranking/fav/daily/sing")
+
     def to_json(self):
         json_array = []
         items = list(filter(lambda line: '<div class="itemData">' in line, self.html_string.split('\n')))
@@ -16,6 +22,7 @@ class DailyTrending(HtmlPage):
         href = None
         likes = None
         views = None
+        title = None
 
         bullet_points = json_element['div']['ul']['li']
         for bullet_point in bullet_points:
@@ -30,7 +37,8 @@ class DailyTrending(HtmlPage):
             id = href.split('/')[-1]
             views = int(views.replace(',', ''))
             likes = int(likes.replace(',', ''))
-            return Video(id=id, views=views, likes=likes)
+            # TODO: title
+            return Video(id=id, title=title, views=views, likes=likes)
 
         return None
 
