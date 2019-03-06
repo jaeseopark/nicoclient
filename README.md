@@ -11,7 +11,7 @@ client = NicoClient()
 videos = client.get_daily_trending_videos()
 
 for video in videos:
-    print(f"'{video.video_id}' has {video.views} views and {video.likes} likes")
+    print(f"'{video.id}' has {video.views} views and {video.likes} likes")
 ```
 
 Output
