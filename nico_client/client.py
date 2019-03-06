@@ -15,3 +15,6 @@ class NicoClient(object):
         r = requests.get(url)
         trending = DailyTrending(str(r.text))
         return trending.get_videos()
+
+    def get_related_videos(self, video_id):
+        raise NotImplementedError
