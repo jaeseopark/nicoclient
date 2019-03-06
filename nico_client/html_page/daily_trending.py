@@ -27,10 +27,10 @@ class DailyTrending(HtmlPage):
                 views = bullet_point['span']['']
 
         if href:
-            video_id = href.split('/')[-1]
+            id = href.split('/')[-1]
             views = int(views.replace(',', ''))
             likes = int(likes.replace(',', ''))
-            return Video(video_id=video_id, views=views, likes=likes)
+            return Video(id=id, views=views, likes=likes)
 
         return None
 
