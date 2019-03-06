@@ -1,22 +1,17 @@
-from nicopy import get_mylist_info, nicopy
+from nicopy import get_mylist_info as get_playlist_info
+from nicopy import nicopy
 
 from nico_client.html_page.daily_trending import DailyTrending
 from nico_client.html_page.search_page import UtattemitaSearchPage
-from nico_client.playlist import Playlist
-from nico_client.video import VIDEO_TYPE_UTATTEMITA, VIDEO_TYPE_VOCALOID_ORG
+from nico_client.video import VIDEO_TYPE_UTATTEMITA, VIDEO_TYPE_VOCALOID_ORG, Video
 
 
 class NicoClient(object):
-    def get_playlist(self, playlist_id):
-        playlist_dict = get_mylist_info(mylist_id=playlist_id)
-        return Playlist(playlist_dict)
-
     def get_daily_trending_videos(self):
         trending = DailyTrending()
         return trending.get_videos()
 
     def populate_details(self, video):
-        # TODO: raw_description
         video_info = nicopy.get_video_info(video.id)
 
         video.tags = [tag['tag'] for tag in video_info.get('tags')]
@@ -33,10 +28,20 @@ class NicoClient(object):
             self.populate_details(video)
 
         if video.video_type == VIDEO_TYPE_UTATTEMITA:
-            # TODO: return other videos in the playlist
-            return []
+            related_videos = []
+            for ref in video.find_references():
+                if ref.startswith('sm'):
+                    related_videos.append(Video(id=ref))
+                elif ref.startswith('mylist/'):
+                    p = get_playlist_info(ref.split('/')[-1])
+                    for item in p['items']:
+                        related_videos.append(Video(id=item['link'].split('/')[-1]))
+
+            return related_videos
+
         elif video.video_type == VIDEO_TYPE_VOCALOID_ORG:
             search_results = UtattemitaSearchPage(video)
             return search_results.get_videos()
+
         else:
             return []

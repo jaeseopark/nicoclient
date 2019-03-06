@@ -1,4 +1,3 @@
-import json
 import unittest
 
 from nico_client.html_page.search_page import UtattemitaSearchPage
