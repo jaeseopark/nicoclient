@@ -19,8 +19,8 @@ class NicoClient(object):
         video.uploader_id = video_info.get('user_id')
         video.title = video_info.get('title')
         video.thumbnail_url = video_info.get('thumbnail_url')
-        video.views = video_info.get('view_counter')
-        video.likes = video_info.get('mylist_counter')
+        video.views = int(video_info.get('view_counter'))
+        video.likes = int(video_info.get('mylist_counter'))
         video.details_populated = True
 
     def get_related_videos(self, video):
