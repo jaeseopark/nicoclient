@@ -12,9 +12,8 @@ class HtmlPage(object):
             if response.status_code in expected_codes:
                 self.html_string = str(response.text)
             else:
-                raise RuntimeError(f"status_code={response.status_code} text='{str(response.text)}'")
-
-        self.html_string = self.html_string.replace('<!DOCTYPE html>', '')
+                msg = f"status_code={response.status_code} expected_codes={expected_codes} text='{str(response.text)}'"
+                raise RuntimeError(msg)
 
     @abstractmethod
     def to_json(self):
