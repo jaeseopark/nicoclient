@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="nico_client",
-    version="1.0.17",
+    version="1.0.18",
     author="Jaeseo Park",
     author_email="jaeseopark@icloud.com",
     description="A python client to interact with nicovideo.jp",
