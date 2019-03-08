@@ -9,7 +9,7 @@ class HtmlPage(object):
 
         if url and html_string is None:
             response = requests.get(url=url, headers=headers)
-            if response.status_code not in expected_codes:
+            if response.status_code in expected_codes:
                 self.html_string = str(response.text)
             else:
                 raise RuntimeError(f"status_code={response.status_code} text='{str(response.text)}'")
