@@ -12,12 +12,12 @@ class NicoClient(object):
     def populate_details(self, video):
         video.setattrs(**get_video_info(video.id))
 
-    def get_related_videos(self, video):
+    def get_related_videos(self, video, sort_by=None, limit=None):
         if not video.details_populated:
             self.populate_details(video)
 
+        related_videos = []
         if video.video_type == VIDEO_TYPE_UTATTEMITA:
-            related_videos = []
             for ref in video.find_references():
                 if ref.startswith('sm'):
                     referenced_video = Video(id=ref)
@@ -30,9 +30,15 @@ class NicoClient(object):
 
         elif video.video_type == VIDEO_TYPE_VOCALOID_ORG:
             search_results = UtattemitaSearchPage(video)
-            return search_results.get_videos()
-        else:
-            return []
+            related_videos += search_results.get_videos()
+
+        if sort_by:
+            related_videos.sort(key=lambda x: x[sort_by], reverse=True)
+
+        if limit and limit < len(related_videos):
+            related_videos = related_videos[:limit - 1]
+
+        return related_videos
 
     def get_videos_by_playlist_id(self, playlist_id):
         p = Playlist(id=playlist_id)
