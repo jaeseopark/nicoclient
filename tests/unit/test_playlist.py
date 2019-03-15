@@ -10,3 +10,6 @@ class TestPlaylist(unittest.TestCase):
         pl = Playlist(html_string=raw_html)
         videos = pl.get_videos()
         self.assertTrue(len(videos) > 0)
+        for video in videos:
+            with self.subTest(video_id=video.id):
+                self.assertEqual(int, type(video.views))
