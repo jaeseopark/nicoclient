@@ -13,11 +13,27 @@ class HtmlPage(ABC):
             response = requests.get(url=url, headers=headers)
             if response.status_code in expected_codes:
                 self.html_string = str(response.text)
+            elif response.status_code == 403:
+                raise PageAccessDeniedError(url)
+            elif response.status_code == 404:
+                raise PageNotFoundError(url)
             else:
                 a_status = response.status_code
                 e_status = json.dumps(expected_codes)
                 text = str(response.text)
                 raise RuntimeError(f"status_code={a_status} expected_codes={e_status} text='{text}'")
+
+
+class PageError(Exception):
+    pass
+
+
+class PageAccessDeniedError(PageError):
+    pass
+
+
+class PageNotFoundError(PageError):
+    pass
 
 
 def to_json(content, raise_exception=False):

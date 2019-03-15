@@ -1,8 +1,13 @@
+import logging
+
 from nico_client.daily_trending import DailyTrending
+from nico_client.html_page import PageError
 from nico_client.nicopy_adapter import get_video_info
 from nico_client.playlist import Playlist
 from nico_client.search_page import UtattemitaSearchPage
 from nico_client.video import VIDEO_TYPE_UTATTEMITA, VIDEO_TYPE_VOCALOID_ORG, Video
+
+logger = logging.getLogger(__name__)
 
 
 class NicoClient(object):
@@ -25,10 +30,12 @@ class NicoClient(object):
                     related_videos.append(referenced_video)
                 elif ref.startswith('mylist/'):
                     playlist_id = ref.split('/')[-1]
-                    p = Playlist(id=playlist_id)
-                    if p.get_owner_id() == video.uploader_id:
-                        related_videos += p.get_videos()
-            return related_videos
+                    try:
+                        p = Playlist(id=playlist_id)
+                        if p.get_owner_id() == video.uploader_id:
+                            related_videos += p.get_videos()
+                    except PageError as e:
+                        logger.warning(f"ref='{ref}' not accessible; skipping")
 
         elif video.video_type == VIDEO_TYPE_VOCALOID_ORG:
             search_results = UtattemitaSearchPage(video)
