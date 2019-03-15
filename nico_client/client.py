@@ -9,18 +9,12 @@ class NicoClient(object):
     def get_daily_trending_videos(self):
         return DailyTrending().get_videos()
 
-    def get_populated_copy(self, video):
-        video_vars = vars(video)
-        new_vars = get_video_info(video.id)
-        for key in video_vars:
-            video_vars[key] = new_vars.get(key) or video_vars[key]
-        new_video = Video(**video_vars)
-        new_video.details_populated = True
-        return new_video
+    def populate_details(self, video):
+        video.setattrs(**get_video_info(video.id))
 
     def get_related_videos(self, video):
         if not video.details_populated:
-            video = self.get_populated_copy(video)
+            self.populate_details(video)
 
         if video.video_type == VIDEO_TYPE_UTATTEMITA:
             related_videos = []
@@ -39,3 +33,7 @@ class NicoClient(object):
             return search_results.get_videos()
         else:
             return []
+
+    def get_videos_by_playlist_id(self, playlist_id):
+        p = Playlist(id=playlist_id)
+        return p.get_videos()

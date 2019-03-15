@@ -3,7 +3,7 @@ from nicopy import nicopy
 
 def get_video_info(id):
     video_info = nicopy.get_video_info(video_id=id)
-    return {
+    mapped_video_info = {
         'tags': [tag['tag'] for tag in video_info.get('tags')],
         'description': video_info.get('description'),
         'uploader_id': video_info.get('user_id'),
@@ -12,5 +12,4 @@ def get_video_info(id):
         'views': int(video_info.get('view_counter')),
         'likes': int(video_info.get('mylist_counter'))
     }
-
-
+    return mapped_video_info
