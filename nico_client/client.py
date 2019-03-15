@@ -42,7 +42,7 @@ class NicoClient(object):
             related_videos += search_results.get_videos()
 
         if sort_by:
-            related_videos.sort(key=lambda x: x[sort_by], reverse=True)
+            related_videos.sort(key=lambda x: vars(x)[sort_by], reverse=True)
 
         if limit and limit < len(related_videos):
             related_videos = related_videos[:limit - 1]
