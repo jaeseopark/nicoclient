@@ -3,7 +3,8 @@ import re
 
 VIDEO_TYPE_UTATTEMITA = 'utattemita'
 VIDEO_TYPE_VOCALOID_ORG = 'org'
-VIDEO_TYPE_UNKNOWN = 'unknown'
+VIDEO_TYPE_INSUFFICIENT_DATA = 'insufficient_data'
+VIDEO_TYPE_UNCATEGORIZED = 'uncategorized'
 
 
 class Video(object):
@@ -26,12 +27,14 @@ class Video(object):
 
     @property
     def video_type(self):
+        if not self.tags:
+            return VIDEO_TYPE_INSUFFICIENT_DATA
         if '歌ってみた' in self.tags or 'Sang_it' in self.tags:
             return VIDEO_TYPE_UTATTEMITA
         elif 'Vocaloid' in self.html.tags:
             return VIDEO_TYPE_VOCALOID_ORG
         else:
-            return VIDEO_TYPE_UNKNOWN
+            return VIDEO_TYPE_UNCATEGORIZED
 
     def find_references(self):
         if self.description is None:

@@ -1,47 +1,41 @@
-from nicopy import get_mylist_info as get_playlist_info
-from nicopy import nicopy
-
-from nico_client.html_page.daily_trending import DailyTrending
-from nico_client.html_page.search_page import UtattemitaSearchPage
+from nico_client.daily_trending import DailyTrending
+from nico_client.nicopy_adapter import get_video_info
+from nico_client.playlist import Playlist
+from nico_client.search_page import UtattemitaSearchPage
 from nico_client.video import VIDEO_TYPE_UTATTEMITA, VIDEO_TYPE_VOCALOID_ORG, Video
 
 
 class NicoClient(object):
     def get_daily_trending_videos(self):
-        trending = DailyTrending()
-        return trending.get_videos()
+        return DailyTrending().get_videos()
 
-    def populate_details(self, video):
-        video_info = nicopy.get_video_info(video.id)
-
-        video.tags = [tag['tag'] for tag in video_info.get('tags')]
-        video.description = video_info.get('description')
-        video.uploader_id = video_info.get('user_id')
-        video.title = video_info.get('title')
-        video.thumbnail_url = video_info.get('thumbnail_url')
-        video.views = int(video_info.get('view_counter'))
-        video.likes = int(video_info.get('mylist_counter'))
-        video.details_populated = True
+    def get_populated_copy(self, video):
+        video_vars = vars(video)
+        new_vars = get_video_info(video.id)
+        for key in video_vars:
+            video_vars[key] = new_vars.get(key) or video_vars[key]
+        new_video = Video(**video_vars)
+        new_video.details_populated = True
+        return new_video
 
     def get_related_videos(self, video):
         if not video.details_populated:
-            self.populate_details(video)
+            video = self.get_populated_copy(video)
 
         if video.video_type == VIDEO_TYPE_UTATTEMITA:
             related_videos = []
             for ref in video.find_references():
                 if ref.startswith('sm'):
-                    related_videos.append(Video(id=ref))
+                    referenced_video = Video(id=ref)
+                    self.populate_details(referenced_video)
+                    related_videos.append(referenced_video)
                 elif ref.startswith('mylist/'):
-                    p = get_playlist_info(ref.split('/')[-1])
-                    for item in p['items']:
-                        related_videos.append(Video(id=item['link'].split('/')[-1]))
-
+                    p = Playlist(id=ref.split('/')[-1])
+                    related_videos += p.get_videos()
             return related_videos
 
         elif video.video_type == VIDEO_TYPE_VOCALOID_ORG:
             search_results = UtattemitaSearchPage(video)
             return search_results.get_videos()
-
         else:
             return []

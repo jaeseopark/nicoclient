@@ -1,5 +1,4 @@
-from nico_client.html_page import HtmlPage
-from nico_client.html_page.html_to_json_parser import HTMLtoJSONParser
+from nico_client.html_page import HtmlPage, to_json
 from nico_client.video import Video
 
 
@@ -14,7 +13,7 @@ class DailyTrending(HtmlPage):
         json_array = []
         items = list(filter(lambda line: '<div class="itemData">' in line, self.html_string.split('\n')))
         for item in items:
-            json_object = HTMLtoJSONParser.to_json(item)
+            json_object = to_json(item)
             json_array.append(json_object)
         return json_array
 
