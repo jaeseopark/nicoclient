@@ -1,7 +1,10 @@
 import json
+import logging
 
 from nico_client.html_page import HtmlPage
 from nico_client.video import Video
+
+logger = logging.getLogger(__name__)
 
 
 class Playlist(HtmlPage):
@@ -13,6 +16,7 @@ class Playlist(HtmlPage):
             HtmlPage.__init__(self, url=url)
         else:
             raise AssertionError('Need at least one parameter value')
+        self.__owner = None
 
     def get_videos(self):
         videos = []
@@ -36,8 +40,9 @@ class Playlist(HtmlPage):
         raise RuntimeError(f"keyword 'Mylist.preload' not found in HTML string")
 
     def get_owner_id(self):
-        for line in self.html_string.split('\n'):
-            if line.strip().startswith('mylist_owner: { user_id:'):
-                return line.split(',')[0].split(':')[-1].strip()
-
-        raise RuntimeError('Owner for the playlist not found')
+        if not self.__owner:
+            for line in self.html_string.split('\n'):
+                if line.strip().startswith('mylist_owner: { user_id:'):
+                    self.__owner = line.split(',')[0].split(':')[-1].strip()
+            logger.warning(f'Owner for the playlist not found')
+        return self.__owner
