@@ -2,9 +2,9 @@ import json
 import re
 
 VIDEO_TYPE_UTATTEMITA = 'utattemita'
-VIDEO_TYPE_VOCALOID_ORG = 'org'
-VIDEO_TYPE_INSUFFICIENT_DATA = 'insufficient_data'
-VIDEO_TYPE_UNCATEGORIZED = 'uncategorized'
+VIDEO_TYPE_VOCALOID_ORG = 'vocaloid_org'
+VIDEO_TYPE_NOT_INITIALIZED = 'not_initialized'
+VIDEO_TYPE_UNKNOWN = 'unknown'
 
 
 class Video(object):
@@ -18,23 +18,18 @@ class Video(object):
         self.description = None
         self.uploader_id = None
         self.details_populated = False
+        self.video_type = VIDEO_TYPE_NOT_INITIALIZED
 
         if url and self.id is None:
             self.id = url.split('/')[-1].split('?')[0]
 
     def __str__(self):
-        return json.dumps(vars(self))
+        attrs = vars(self)
+        attrs['title'] = self.title
+        attrs['description'] = self.description
+        attrs['tags'] = self.tags
 
-    @property
-    def video_type(self):
-        if not self.tags:
-            return VIDEO_TYPE_INSUFFICIENT_DATA
-        if '歌ってみた' in self.tags or 'Sang_it' in self.tags:
-            return VIDEO_TYPE_UTATTEMITA
-        elif 'Vocaloid' in self.html.tags:
-            return VIDEO_TYPE_VOCALOID_ORG
-        else:
-            return VIDEO_TYPE_UNCATEGORIZED
+        return json.dumps(attrs)
 
     def find_references(self):
         if self.description is None:
@@ -52,3 +47,21 @@ class Video(object):
                 refs.append(self.description[i_start:i_end])
 
         return refs
+
+    def __init_tags(self):
+        self.tags = self.tags or []
+        if '歌ってみた' in self.tags or 'Sang_it' in self.tags:
+            self.video_type = VIDEO_TYPE_UTATTEMITA
+        elif 'Vocaloid' in self.tags:
+            self.video_type = VIDEO_TYPE_VOCALOID_ORG
+        else:
+            self.video_type = VIDEO_TYPE_UNKNOWN
+
+    def setattrs(self, **kwargs):
+        original_vars = vars(self)
+        for k, v in kwargs.items():
+            if k in original_vars:
+                setattr(self, k, v)
+
+        self.__init_tags()
+        self.details_populated = True

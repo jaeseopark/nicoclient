@@ -1,3 +1,4 @@
+import json
 from abc import ABC
 from html.parser import HTMLParser
 
@@ -13,8 +14,10 @@ class HtmlPage(ABC):
             if response.status_code in expected_codes:
                 self.html_string = str(response.text)
             else:
-                msg = f"status_code={response.status_code} expected_codes={expected_codes} text='{str(response.text)}'"
-                raise RuntimeError(msg)
+                a_status = response.status_code
+                e_status = json.dumps(expected_codes)
+                text = str(response.text)
+                raise RuntimeError(f"status_code={a_status} expected_codes={e_status} text='{text}'")
 
 
 def to_json(content, raise_exception=False):
