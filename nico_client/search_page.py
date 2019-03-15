@@ -1,5 +1,4 @@
-from nico_client.html_page import HtmlPage
-from nico_client.html_page.html_to_json_parser import HTMLtoJSONParser
+from nico_client.html_page import HtmlPage, to_json
 from nico_client.video import Video
 
 
@@ -13,7 +12,7 @@ class UtattemitaSearchPage(HtmlPage):
         else:
             raise AssertionError('Need at least one parameter value')
 
-    def to_json(self):
+    def __get_videos_as_json(self):
         start_keyword = '<li class="item" data-video-item data-video-id="'
         end_keyword = '</li>'
 
@@ -32,16 +31,13 @@ class UtattemitaSearchPage(HtmlPage):
 
             if line.strip() == end_keyword:
                 recording_mode = False
-                video = self.__to_video('\n'.join(video_string_array))
-                videos.append(video)
+                json_object = to_json('\n'.join(video_string_array))
+                videos.append(json_object)
+                video_string_array = []
 
-        return {
-            'videos': videos
-        }
+        return videos
 
-    def __to_video(self, video_string):
-        video_json = HTMLtoJSONParser.to_json(video_string)
-
+    def __to_video(self, video_json):
         video = Video()
         video.id = video_json['li']['#data-video-id']
 
@@ -66,5 +62,4 @@ class UtattemitaSearchPage(HtmlPage):
         return video
 
     def get_videos(self):
-        json_object = self.to_json()
-        return json_object['videos']
+        return [self.__to_video(j) for j in self.__get_videos_as_json()]
