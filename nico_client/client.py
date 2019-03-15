@@ -35,6 +35,8 @@ class NicoClient(object):
                         if p.get_owner_id() == video.uploader_id:
                             related_videos += p.get_videos()
                     except PageError as e:
+                        else:
+                            logger.info(f"playlist='{ref}' owner='{p.get_owner_id()}'")
                         logger.warning(f"ref='{ref}' not accessible; skipping")
 
         elif video.video_type == VIDEO_TYPE_VOCALOID_ORG:
