@@ -13,3 +13,9 @@ class TestPlaylist(unittest.TestCase):
         for video in videos:
             with self.subTest(video_id=video.id):
                 self.assertEqual(int, type(video.views))
+
+    def test_get_owner_id(self):
+        raw_html = get_file_content_as_string('mylist.html')
+        pl = Playlist(html_string=raw_html)
+        owner_id = pl.get_owner_id()
+        self.assertEqual('52479273', owner_id)

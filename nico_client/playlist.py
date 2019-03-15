@@ -34,3 +34,10 @@ class Playlist(HtmlPage):
                 return videos
 
         raise RuntimeError(f"keyword 'Mylist.preload' not found in HTML string")
+
+    def get_owner_id(self):
+        for line in self.html_string.split('\n'):
+            if line.strip().startswith('mylist_owner: { user_id:'):
+                return line.split(',')[0].split(':')[-1].strip()
+
+        raise RuntimeError('Owner for the playlist not found')

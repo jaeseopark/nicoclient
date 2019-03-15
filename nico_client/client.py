@@ -24,8 +24,10 @@ class NicoClient(object):
                     self.populate_details(referenced_video)
                     related_videos.append(referenced_video)
                 elif ref.startswith('mylist/'):
-                    p = Playlist(id=ref.split('/')[-1])
-                    related_videos += p.get_videos()
+                    playlist_id = ref.split('/')[-1]
+                    p = Playlist(id=playlist_id)
+                    if p.get_owner_id() == video.uploader_id:
+                        related_videos += p.get_videos()
             return related_videos
 
         elif video.video_type == VIDEO_TYPE_VOCALOID_ORG:
