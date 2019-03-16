@@ -1,19 +1,19 @@
 import logging
 
-from nico_client import nicopy_adapter
-from nico_client.daily_trending import DailyTrending
-from nico_client.playlist import Playlist
-from nico_client.video_finder import VideoFinder
+from nico_client.core import video_info_handler
+from nico_client.core.video_finder import VideoFinder
+from nico_client.html_page.daily_trending import DailyTrending
+from nico_client.html_page.playlist import Playlist
 
 logger = logging.getLogger(__name__)
 
 
 def get_daily_trending_videos():
-    return DailyTrending().get_videos()
+    return DailyTrending.get_videos()
 
 
 def populate_details(video):
-    nicopy_adapter.populate_details(video)
+    video_info_handler.populate_details(video)
 
 
 def get_related_videos(video, sort_by=None, limit=None):

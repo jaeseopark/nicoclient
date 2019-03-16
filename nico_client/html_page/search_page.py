@@ -1,5 +1,5 @@
-from nico_client.html_page import HtmlPage, to_json
-from nico_client.video import Video
+from nico_client.html_page.html_page import HtmlPage, to_json
+from nico_client.model.video import Video
 
 
 class UtattemitaSearchPage(HtmlPage):

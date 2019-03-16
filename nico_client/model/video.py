@@ -1,10 +1,13 @@
 import json
+import logging
 import re
 
 VIDEO_TYPE_UTATTEMITA = 'utattemita'
 VIDEO_TYPE_VOCALOID_ORG = 'vocaloid_org'
 VIDEO_TYPE_NOT_INITIALIZED = 'not_initialized'
 VIDEO_TYPE_UNKNOWN = 'unknown'
+
+logger = logging.getLogger(__name__)
 
 
 class Video(object):
@@ -44,7 +47,12 @@ class Video(object):
                     if not self.description[j].isdigit():
                         i_end = j
                         break
-                refs.append(self.description[i_start:i_end])
+                ref = self.description[i_start:i_end]
+                if len(ref) > len(keyword):
+                    refs.append(ref)
+                    logger.info(f"ref={ref} has been added to the list")
+                else:
+                    logger.info(f"ref={ref} is not valid; skipping")
 
         return refs
 
