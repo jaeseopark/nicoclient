@@ -1,6 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
 
+from nico_client import nicopy_adapter
 from nico_client.html_page import PageError
 from nico_client.playlist import Playlist
 from nico_client.search_page import UtattemitaSearchPage
@@ -39,7 +40,11 @@ class VideoFinderUtattemita(VideoFinder):
         for ref in self.video.find_references():
             if ref.startswith('sm'):
                 referenced_video = Video(id=ref)
-                related_videos.append(referenced_video)
+                nicopy_adapter.populate_details(referenced_video)
+                if referenced_video.video_type == VIDEO_TYPE_VOCALOID_ORG:
+                    related_videos.append(referenced_video)
+                else:
+                    logger.info(f"{referenced_video.id} is not a vocaloid original video; skipping")
             elif ref.startswith('mylist/'):
                 playlist_id = ref.split('/')[-1]
                 try:

@@ -1,7 +1,7 @@
 import logging
 
+from nico_client import nicopy_adapter
 from nico_client.daily_trending import DailyTrending
-from nico_client.nicopy_adapter import get_video_info
 from nico_client.playlist import Playlist
 from nico_client.video_finder import VideoFinder
 
@@ -13,7 +13,7 @@ def get_daily_trending_videos():
 
 
 def populate_details(video):
-    video.setattrs(**get_video_info(video.id))
+    nicopy_adapter.populate_details(video)
 
 
 def get_related_videos(video, sort_by=None, limit=None):
