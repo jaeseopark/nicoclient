@@ -43,9 +43,12 @@ class Playlist(HtmlPage):
 
     def get_owner_id(self):
         if not self.__owner:
+            found = False
             logger.info(f"Retrieving owner info... playlist_id={self.id}")
             for line in self.html_string.split('\n'):
                 if line.strip().startswith('mylist_owner: { user_id:'):
                     self.__owner = line.split(',')[0].split(':')[-1].strip()
-            logger.warning(f'Owner not found playlist_id={self.id} status_code={self.status_code}')
+                    found = True
+            if not found:
+                logger.warning(f'Owner not found playlist_id={self.id} status_code={self.status_code}')
         return self.__owner
