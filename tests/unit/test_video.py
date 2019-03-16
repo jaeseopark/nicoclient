@@ -1,5 +1,5 @@
 from nico_client.model.video import Video
-from tests.unit import UnitTest
+from tests import UnitTest
 
 
 class TestVideo(UnitTest):

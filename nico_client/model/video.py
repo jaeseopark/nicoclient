@@ -38,7 +38,7 @@ class Video(object):
         if self.description is None:
             raise AssertionError('description is required')
 
-        refs = []
+        refs = set()
         for keyword in ['sm', 'mylist/']:
             index_set = [m.start() for m in re.finditer(keyword, self.description)]
             for i_start in index_set:
@@ -49,12 +49,12 @@ class Video(object):
                         break
                 ref = self.description[i_start:i_end]
                 if len(ref) > len(keyword):
-                    refs.append(ref)
+                    refs.add(ref)
                     logger.info(f"ref={ref} has been added to the list")
                 else:
                     logger.info(f"ref={ref} is not valid; skipping")
 
-        return refs
+        return list(refs)
 
     def __init_tags(self):
         self.tags = self.tags or []
