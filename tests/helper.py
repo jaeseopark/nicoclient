@@ -14,3 +14,11 @@ def get_root_prefix():
         cwd = cwd[:-1]
         prefix += '../'
     return prefix
+
+
+def get_test_scope():
+    scope = ['integration', 'unit']
+    test_scope = os.getenv('TEST_SCOPE')
+    if test_scope is not None:
+        scope = [x.strip() for x in test_scope.split(',')]
+    return scope
