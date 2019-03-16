@@ -7,8 +7,7 @@ A python client to interact with [nicovideo.jp](https://nicovideo.jp).
 ### Get daily trending videos
 
 ```python
-client = NicoClient()
-videos = client.get_daily_trending_videos()
+videos = nico_client.get_daily_trending_videos()
 
 for video in videos:
     print(f"'{video.id}' has {video.views} views and {video.likes} likes")
@@ -24,8 +23,7 @@ for video in videos:
 ```python
 video = Video(id='sm34734479')
 
-client = NicoClient()
-client.populate_details(video)
+nico_client.populate_details(video)
 print(f"video={video}")
 
 # {
@@ -57,8 +55,7 @@ Videos that have similar titles and the videos from same playlist
 ```python
 video = Video(id='sm34734479')
 
-client = NicoClient()
-client.get_related_videos(video)
+nico_client.get_related_videos(video)
 
 # Output TBD
 ```
@@ -76,15 +73,13 @@ for video in videos:
 
 ## Tests
 
-### Run all tests
+### Run tests by scope
 
 ```bash
+# TEST_SCOPE is a comma-separated list
+export TEST_SCOPE=unit,integration
+
 python3 -m unittest discover
 ```
 
-### Run a specific test module/class
-
-Example
-```bash
-python3 -m unittest tests.unit.test_daily_trending 
-``` 
+Note: if `TEST_SCOPE` isn't provided, then it runs all tests.

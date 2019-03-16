@@ -1,10 +1,9 @@
-import unittest
-
 from nico_client.html_page.playlist import Playlist
 from tests.helper import get_file_content_as_string
+from tests.unit import UnitTest
 
 
-class TestPlaylist(unittest.TestCase):
+class TestPlaylist(UnitTest):
     def test_get_videos(self):
         raw_html = get_file_content_as_string('mylist.html')
         pl = Playlist(html_string=raw_html)
