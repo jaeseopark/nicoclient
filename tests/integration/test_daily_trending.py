@@ -1,5 +1,5 @@
 from nico_client import get_daily_trending_videos
-from tests.integration import IntegrationTest
+from tests import IntegrationTest
 
 
 class TestDailyTrending(IntegrationTest):

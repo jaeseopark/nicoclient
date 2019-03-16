@@ -1,3 +1,4 @@
+import json
 import logging
 
 from nicopy import ResponseFailError, nicopy
@@ -16,9 +17,18 @@ def populate_details(video):
     info = get_info_via_nicopy(video.id)
     if info is None:
         logger.warning(f"video='{id}' raised a ResponseFailError; falling back to HTML parser...")
-        info = VideoPage(video.id).get_video_info()
+        info = VideoPage(id=video.id).get_video_info()
 
+    __validate_info(info)
     video.setattrs(**info)
+
+
+def __validate_info(json_object):
+    missing = []
+    for key in ['tags', 'description', 'uploader_id', 'title', 'thumbnail_url', 'views', 'likes']:
+        if key not in json_object:
+            missing.append(key)
+    raise AssertionError(f"missing keys={json.dumps(missing)}")
 
 
 def get_info_via_nicopy(video_id):

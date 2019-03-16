@@ -1,11 +1,10 @@
 from nico_client.html_page.daily_trending import DailyTrending
-from tests.helper import get_file_content_as_string
-from tests.unit import UnitTest
+from tests import UnitTest
 
 
 class TestDailyTrending(UnitTest):
     def test_video_conversion(self):
-        html_str = get_file_content_as_string('daily_trending.html')
+        html_str = self.get_file_content_as_string('daily_trending.html')
         dt = DailyTrending(html_string=html_str)
         videos = dt.get_videos()
         self.assertEqual(100, len(videos))

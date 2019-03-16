@@ -1,6 +1,6 @@
 from nico_client import populate_details
 from nico_client.model.video import Video
-from tests.integration import IntegrationTest
+from tests import IntegrationTest
 
 
 class TestVideoInfoHandler(IntegrationTest):
