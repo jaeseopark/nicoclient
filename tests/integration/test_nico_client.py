@@ -1,7 +1,7 @@
 import unittest
 
-from nico_client.nico_client import get_daily_trending_videos, get_related_videos, populate_details
-from nico_client.video import Video
+from nico_client import get_daily_trending_videos, get_related_videos, populate_details
+from nico_client.model.video import Video
 
 
 @unittest.skip("Skipping integration tests by default")

@@ -1,6 +1,6 @@
 import unittest
 
-from nico_client.search_page import UtattemitaSearchPage
+from nico_client.html_page.search_page import UtattemitaSearchPage
 from tests.helper import get_file_content_as_string
 
 

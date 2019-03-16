@@ -1,5 +1,5 @@
-from nico_client.html_page import HtmlPage, to_json
-from nico_client.video import Video
+from nico_client.html_page.html_page import HtmlPage, to_json
+from nico_client.model.video import Video
 
 
 class DailyTrending(HtmlPage):
@@ -41,10 +41,14 @@ class DailyTrending(HtmlPage):
 
         return None
 
-    def get_videos(self):
+    def __get_videos(self):
         videos = []
         for element in self.to_json():
             video = self.__get_video(element)
             if video is not None:
                 videos.append(video)
         return videos
+
+    @staticmethod
+    def get_videos():
+        return DailyTrending().__get_videos()

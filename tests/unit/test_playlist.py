@@ -1,6 +1,6 @@
 import unittest
 
-from nico_client.playlist import Playlist
+from nico_client.html_page.playlist import Playlist
 from tests.helper import get_file_content_as_string
 
 

@@ -1,11 +1,11 @@
 import logging
 from abc import ABC, abstractmethod
 
-from nico_client import nicopy_adapter
-from nico_client.html_page import PageError
-from nico_client.playlist import Playlist
-from nico_client.search_page import UtattemitaSearchPage
-from nico_client.video import VIDEO_TYPE_UTATTEMITA, VIDEO_TYPE_VOCALOID_ORG, Video
+from nico_client.core.video_info_handler import populate_details
+from nico_client.html_page.html_page import PageError
+from nico_client.html_page.playlist import Playlist
+from nico_client.html_page.search_page import UtattemitaSearchPage
+from nico_client.model.video import VIDEO_TYPE_UTATTEMITA, VIDEO_TYPE_VOCALOID_ORG, Video
 
 logger = logging.getLogger(__name__)
 
@@ -43,9 +43,10 @@ class VideoFinderUtattemita(VideoFinder):
     def get_related_videos_impl(self):
         related_videos = []
         for ref in self.video.find_references():
+            logger.info(f"Evaluating ref={ref}")
             if ref.startswith('sm'):
                 referenced_video = Video(id=ref)
-                nicopy_adapter.populate_details(referenced_video)
+                populate_details(referenced_video)
                 if referenced_video.video_type == VIDEO_TYPE_VOCALOID_ORG:
                     related_videos.append(referenced_video)
                 else:
