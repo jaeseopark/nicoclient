@@ -52,3 +52,8 @@ class Playlist(HtmlPage):
             if not found:
                 logger.warning(f'Owner not found playlist_id={self.id} status_code={self.status_code}')
         return self.__owner
+
+
+def get_videos_by_playlist_id(playlist_id):
+    p = Playlist(id=playlist_id)
+    return p.get_videos()
