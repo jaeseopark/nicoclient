@@ -27,11 +27,16 @@ class VideoFinder(ABC):
             return VideoFinderVocaloidOriginal(video)
         else:
             logger.info(f"video_type={video.video_type} has no corresponding VideoFinder; skipping")
-            return []
+            return VideoFinderDummy(video)
 
     @abstractmethod
     def get_related_videos_impl(self):
         pass
+
+
+class VideoFinderDummy(VideoFinder):
+    def get_related_videos_impl(self):
+        return []
 
 
 class VideoFinderUtattemita(VideoFinder):
