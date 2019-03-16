@@ -46,11 +46,14 @@ class VideoFinderUtattemita(VideoFinder):
             logger.info(f"Evaluating ref={ref}")
             if ref.startswith('sm'):
                 referenced_video = Video(id=ref)
-                populate_details(referenced_video)
-                if referenced_video.video_type == VIDEO_TYPE_VOCALOID_ORG:
-                    related_videos.append(referenced_video)
-                else:
-                    logger.info(f"{referenced_video.id} is not a vocaloid original video; skipping")
+                try:
+                    populate_details(referenced_video)
+                    if referenced_video.video_type == VIDEO_TYPE_VOCALOID_ORG:
+                        related_videos.append(referenced_video)
+                    else:
+                        logger.info(f"{referenced_video.id} is not a vocaloid original video; skipping")
+                except PageError:
+                    logger.info(f"PageError with video_id='{referenced_video.id}'; skipping")
             elif ref.startswith('mylist/'):
                 playlist_id = ref.split('/')[-1]
                 try:
@@ -74,7 +77,11 @@ class VideoFinderVocaloidOriginal(VideoFinder):
 
 def get_related_videos(video, sort_by=None, limit=None):
     if not video.details_populated:
-        populate_details(video)
+        try:
+            populate_details(video)
+        except PageError as e:
+            logger.warning(f"PagerError with video_id={video.id} error='{str(e)}'; returning an empty array")
+            return []
 
     related_videos = VideoFinder.get_related_videos(video)
 
