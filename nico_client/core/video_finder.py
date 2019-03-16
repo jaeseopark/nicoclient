@@ -70,3 +70,18 @@ class VideoFinderVocaloidOriginal(VideoFinder):
         search_results = UtattemitaSearchPage(self.video)
         related_videos += search_results.get_videos()
         return related_videos
+
+
+def get_related_videos(video, sort_by=None, limit=None):
+    if not video.details_populated:
+        populate_details(video)
+
+    related_videos = VideoFinder.get_related_videos(video)
+
+    if sort_by:
+        related_videos.sort(key=lambda x: vars(x)[sort_by], reverse=True)
+
+    if limit and limit < len(related_videos):
+        related_videos = related_videos[:limit - 1]
+
+    return related_videos

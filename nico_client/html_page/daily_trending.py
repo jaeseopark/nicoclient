@@ -31,6 +31,8 @@ class DailyTrending(HtmlPage):
                 likes = hyperlink['']
             elif bullet_point['#class'] == 'count view':
                 views = bullet_point['span']['']
+            if likes is not None and views is not None:
+                break
 
         if href:
             id = href.split('/')[-1]
@@ -52,3 +54,7 @@ class DailyTrending(HtmlPage):
     @staticmethod
     def get_videos():
         return DailyTrending().__get_videos()
+
+
+def get_daily_trending_videos():
+    return DailyTrending.get_videos()
