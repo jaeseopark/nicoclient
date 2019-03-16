@@ -1,18 +1,13 @@
 import unittest
 
-from nico_client.client import NicoClient
+from nico_client.nico_client import get_daily_trending_videos, get_related_videos, populate_details
 from nico_client.video import Video
 
 
-# @unittest.skip("Skipping integration tests by default")
+@unittest.skip("Skipping integration tests by default")
 class TestNicoClient(unittest.TestCase):
-
-    def setUp(self):
-        super().setUp()
-        self.client = NicoClient()
-
     def test_get_daily_trending_videos(self):
-        videos = self.client.get_daily_trending_videos()
+        videos = get_daily_trending_videos()
         self.assertEqual(100, len(videos))
         for video in videos:
             with self.subTest(video_id=video.id, views=video.views, likes=video.likes):
@@ -23,11 +18,11 @@ class TestNicoClient(unittest.TestCase):
         for video_id in ['sm34775615', 'sm34734479']:
             with self.subTest(video_id=video_id):
                 video = Video(id=video_id)
-                videos = self.client.get_related_videos(video)
+                videos = get_related_videos(video)
                 self.assertTrue(len(videos) > 1)
 
     def test_video_attribute_population(self):
         video = Video(id='sm34734479')
         self.assertIsNone(video.views)
-        self.client.populate_details(video)
+        populate_details(video)
         self.assertEqual(type(video.views), int, "video.views is expected to be an integer")
