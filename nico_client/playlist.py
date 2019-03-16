@@ -16,9 +16,11 @@ class Playlist(HtmlPage):
             HtmlPage.__init__(self, url=url)
         else:
             raise AssertionError('Need at least one parameter value')
+        self.id = id
         self.__owner = None
 
     def get_videos(self):
+        logger.info(f"Getting videos... playlist_id={self.id}")
         videos = []
         for line in [line.strip() for line in self.html_string.split('\n')]:
             if line.startswith('Mylist.preload'):
@@ -37,12 +39,13 @@ class Playlist(HtmlPage):
 
                 return videos
 
-        raise RuntimeError(f"keyword 'Mylist.preload' not found in HTML string")
+        raise RuntimeError(f"keyword 'Mylist.preload' not found in HTML string playlist_id={self.id}")
 
     def get_owner_id(self):
         if not self.__owner:
+            logger.info(f"Retrieving owner info... playlist_id={self.id}")
             for line in self.html_string.split('\n'):
                 if line.strip().startswith('mylist_owner: { user_id:'):
                     self.__owner = line.split(',')[0].split(':')[-1].strip()
-            logger.warning(f'Owner for the playlist not found')
+            logger.warning(f'Owner not found playlist_id={self.id} status_code={self.status_code}')
         return self.__owner
