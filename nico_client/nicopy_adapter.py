@@ -28,3 +28,14 @@ def get_video_info(id):
             'likes': 0
         }
     return mapped_video_info
+
+
+def populate_details(video):
+    """
+    Populates the attributes in the given video object.
+    Ideally, this function should reside in nico_client, but other files in the module use this function and there is
+    a risk of having cyclic dependency.
+    :param video: Video object to be populated
+    :return: None
+    """
+    video.setattrs(**get_video_info(video.id))
