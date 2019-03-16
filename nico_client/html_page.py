@@ -8,9 +8,11 @@ import requests
 class HtmlPage(ABC):
     def __init__(self, html_string=None, url=None, headers={}, expected_codes=[200]):
         self.html_string = html_string
+        self.status_code = None
 
         if url and html_string is None:
             response = requests.get(url=url, headers=headers)
+            self.status_code = response.status_code
             if response.status_code in expected_codes:
                 self.html_string = str(response.text)
             elif response.status_code == 403:
