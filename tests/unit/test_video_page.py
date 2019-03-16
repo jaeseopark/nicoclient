@@ -16,7 +16,7 @@ class TestVideoPage(UnitTest):
         self.assertEqual('え？あぁ、そう。　歌ってみた－遊', info['title'])
 
     def test_video_page_with_json_data_english(self):
-        html_string = self.get_file_content_as_string('video_english.html')
+        html_string = self.get_file_content_as_string('video_with_json_eng.html')
         vp = VideoPage(html_string=html_string)
         info = vp.get_video_info()
         self.assertEqual(4, len(info['tags']))

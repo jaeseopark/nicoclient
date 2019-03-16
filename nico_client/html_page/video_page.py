@@ -61,7 +61,7 @@ class VideoPageInnerParserWithJson(VideoPageInnerParser):
         }
 
     def line_to_json(self, line):
-        root_node = BeautifulSoup(line)
+        root_node = BeautifulSoup(line,'html.parser')
         div_node = root_node.find('div', {'id': 'js-initial-watch-data'})
         json_string = div_node['data-api-data']
         return json.loads(json_string)
@@ -69,7 +69,7 @@ class VideoPageInnerParserWithJson(VideoPageInnerParser):
 
 class VideoPageInnerParserWithoutJson(VideoPageInnerParser):
     def get_video_info(self):
-        root_node = BeautifulSoup(self.html_string)
+        root_node = BeautifulSoup(self.html_string,'html.parser')
         title_node = root_node.find('h1', {'class': 'VideoTitle'})
         user_node = root_node.find('div', {'class': 'VideoOwnerIcon'})
         user_id = user_node.find('a')['href'].split('/')[-1]
