@@ -58,10 +58,11 @@ class VideoFinderUtattemita(VideoFinder):
                 playlist_id = ref.split('/')[-1]
                 try:
                     p = Playlist(id=playlist_id)
+                    logger.info(f"playlist='{ref}' owner='{p.get_owner_id()}'")
                     if p.get_owner_id() == self.video.uploader_id:
                         related_videos += p.get_videos()
                     else:
-                        logger.info(f"playlist='{ref}' owner='{p.get_owner_id()}'")
+                        logger.info('owner does not match; skipping')
                 except PageError:
                     logger.warning(f"ref='{ref}' not accessible; skipping")
         return related_videos
