@@ -39,7 +39,6 @@ class VideoFinderUtattemita(VideoFinder):
         for ref in self.video.find_references():
             if ref.startswith('sm'):
                 referenced_video = Video(id=ref)
-                self.populate_details(referenced_video)
                 related_videos.append(referenced_video)
             elif ref.startswith('mylist/'):
                 playlist_id = ref.split('/')[-1]

@@ -76,8 +76,7 @@ TBD
 ### Get videos in a playlist
 
 ```python
-client = NicoClient()
-videos = client.get_videos_by_playlist_id('58924781')
+videos = nico_client.get_videos_by_playlist_id('58924781')
 
 for video in videos:
     print(f"'{video.id}' has {video.views} views and {video.likes} likes")
