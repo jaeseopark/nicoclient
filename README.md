@@ -24,7 +24,7 @@ for video in videos:
 video = Video(id='sm34734479')
 
 nico_client.populate_details(video)
-print(f"video={video}")
+print(video)
 
 # {
 #   "id": "sm34734479",
@@ -55,7 +55,7 @@ Videos that have similar titles and the videos from same playlist
 ```python
 video = Video(id='sm34734479')
 
-nico_client.get_related_videos(video)
+related_videos = nico_client.get_related_videos(video)
 
 # Output TBD
 ```
