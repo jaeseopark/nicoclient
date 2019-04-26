@@ -19,19 +19,24 @@ class DailyTrending(HtmlPage):
         videos = []
         for item in self.html_string.split('<li class="item videoRanking'):
             if '<p class="itemTime' in item:
-                video = {}
                 root_node = BeautifulSoup('<li class="item videoRanking' + item, 'html.parser')
-                title_node = root_node.find('p', {'class': 'itemTitle ranking'}).find('a')
 
                 time_str = root_node.find('div', {'class': 'videoList01Wrap'}).find('span').string
                 time_obj = datetime.strptime(time_str, '%Y/%m/%d %H:%M')
+
+                age = get_posix_now() - (get_posix(time_obj) - 32400)
+                if age > 86400:
+                    # Do not append if the video is more than a day old
+                    continue
+
+                title_node = root_node.find('p', {'class': 'itemTitle ranking'}).find('a')
 
                 videos.append({
                     'id': title_node['href'].strip('watch/'),
                     'title': title_node['title'],
                     'views': int(root_node.find('li', {'class': 'count view'}).find('span').string.replace(',', '')),
                     'likes': int(root_node.find('li', {'class': 'count mylist'}).find('span').string.replace(',', '')),
-                    'age': get_posix_now() - (get_posix(time_obj) - 32400)
+                    'age': age
                 })
 
         return videos
