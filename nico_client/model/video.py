@@ -11,12 +11,13 @@ logger = logging.getLogger(__name__)
 
 
 class Video(object):
-    def __init__(self, id=None, title=None, url=None, views=None, likes=None, *args, **kwargs):
+    def __init__(self, id=None, title=None, url=None, views=None, likes=None, age=None, *args, **kwargs):
         self.id = id
         self.views = views
         self.likes = likes
         self.thumbnail_url = None
         self.title = title
+        self.age = age
         self.tags = None
         self.description = None
         self.uploader_id = None
@@ -38,7 +39,7 @@ class Video(object):
         if self.description is None:
             raise AssertionError('description is required')
 
-        refs = set()
+        refs = list()
         for keyword in ['sm', 'mylist/']:
             index_set = [m.start() for m in re.finditer(keyword, self.description)]
             for i_start in index_set:
@@ -49,12 +50,13 @@ class Video(object):
                         break
                 ref = self.description[i_start:i_end]
                 if len(ref) > len(keyword):
-                    refs.add(ref)
+                    if ref not in refs:
+                        refs.append(ref)
                     logger.info(f"ref={ref} has been added to the list")
                 else:
                     logger.info(f"ref={ref} is not valid; skipping")
 
-        return list(refs)
+        return refs
 
     def __init_tags(self):
         self.tags = self.tags or []

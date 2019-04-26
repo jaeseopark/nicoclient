@@ -1,8 +1,11 @@
 import json
 import logging
+import time
+from datetime import datetime
 
 from nico_client.html_page.html_page import HtmlPage
 from nico_client.model.video import Video
+from nico_client.utils.time_utils import get_posix_now
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +35,8 @@ class Playlist(HtmlPage):
                         id=item_data['video_id'],
                         title=item_data['title'],
                         views=int(item_data['view_counter']),
-                        likes=int(item_data['mylist_counter'])
+                        likes=int(item_data['mylist_counter']),
+                        age=get_posix_now() - item_data['first_retrieve']
                     )
                     video.thumbnail_url = item_data['thumbnail_url']
                     videos.append(video)
