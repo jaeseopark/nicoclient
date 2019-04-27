@@ -7,13 +7,35 @@ from nico_client.html_page.html_page import HtmlPage
 from nico_client.model.video import Video
 from nico_client.utils.time_utils import get_posix, get_posix_now
 
+TIME_RANGE_VALUES = ['daily', 'weekly', 'monthly']
+AGE_THRESHOLD_MAP = {
+    'daily': 86400,
+    'weekly': 86400 * 7,
+    'monthly': 86400 * 30
+}
 
-class DailyTrending(HtmlPage):
-    def __init__(self, html_string=None):
+
+class Trending(HtmlPage):
+    def __init__(self, time_range=None, html_string=None, new_videos_only=True):
+        if not time_range and not html_string:
+            raise AssertionError('time_range or html_string must be provided')
+
+        self.new_videos_only = new_videos_only
+        self.time_range = None
+
         if html_string:
             HtmlPage.__init__(self, html_string=html_string)
+            for tr in TIME_RANGE_VALUES:
+                if self.html_string.count(f"/{tr}/") > 10:
+                    self.time_range = tr
+                    break
+            if not self.time_range:
+                raise RuntimeError('Cannot determine time range')
         else:
-            HtmlPage.__init__(self, url="https://www.nicovideo.jp/ranking/mylist/daily/sing")
+            if time_range not in TIME_RANGE_VALUES:
+                raise AssertionError(f"invalid time_range='{time_range}'")
+            self.time_range = time_range
+            HtmlPage.__init__(self, url=f"https://www.nicovideo.jp/ranking/mylist/{time_range}/sing")
 
     def to_json(self):
         videos = []
@@ -24,8 +46,9 @@ class DailyTrending(HtmlPage):
                 time_str = root_node.find('div', {'class': 'videoList01Wrap'}).find('span').string
                 time_obj = datetime.strptime(time_str, '%Y/%m/%d %H:%M')
 
+                age_threshold = AGE_THRESHOLD_MAP[self.time_range]
                 age = get_posix_now() - (get_posix(time_obj) - 32400)
-                if age > 86400:
+                if self.new_videos_only and age > age_threshold:
                     # Do not append if the video is more than a day old
                     continue
 
@@ -41,13 +64,13 @@ class DailyTrending(HtmlPage):
 
         return videos
 
-    def __get_videos(self):
+    def get_videos(self):
         return [Video(**v) for v in self.to_json()]
-
-    @staticmethod
-    def get_videos():
-        return DailyTrending().__get_videos()
 
 
 def get_daily_trending_videos():
-    return DailyTrending.get_videos()
+    return Trending(time_range='daily').get_videos()
+
+
+def get_weekly_trending_videos():
+    return Trending(time_range='weekly').get_videos()
