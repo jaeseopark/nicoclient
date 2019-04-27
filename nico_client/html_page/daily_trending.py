@@ -13,7 +13,7 @@ class DailyTrending(HtmlPage):
         if html_string:
             HtmlPage.__init__(self, html_string=html_string)
         else:
-            HtmlPage.__init__(self, url="https://www.nicovideo.jp/ranking/fav/daily/sing")
+            HtmlPage.__init__(self, url="https://www.nicovideo.jp/ranking/mylist/daily/sing")
 
     def to_json(self):
         videos = []
