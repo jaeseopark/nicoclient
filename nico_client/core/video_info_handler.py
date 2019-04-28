@@ -2,9 +2,12 @@ import json
 import logging
 
 import nicopy
+import dateparser
 
 from nico_client.html_page.html_page import PageError
 from nico_client.html_page.video_page import VideoPage
+
+logging.getLogger('dateparser').setLevel(logging.CRITICAL)
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +44,8 @@ def __validate_info(json_object):
 
 
 def get_info_via_nicopy(video_id):
+    from nico_client.utils.time_utils import get_posix
+
     try:
         info_raw = nicopy.get_video_info(video_id)
         return {
@@ -50,7 +55,8 @@ def get_info_via_nicopy(video_id):
             'title': info_raw.get('title'),
             'thumbnail_url': info_raw.get('thumbnail_url'),
             'views': int(info_raw.get('view_counter')),
-            'likes': int(info_raw.get('mylist_counter'))
+            'likes': int(info_raw.get('mylist_counter')),
+            'upload_time': get_posix(dateparser.parse(info_raw.get('first_retrieve')))
         }
     except nicopy.ResponseFailError:
         raise PageError

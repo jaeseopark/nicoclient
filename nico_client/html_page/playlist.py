@@ -1,13 +1,17 @@
 import json
 import logging
-import time
-from datetime import datetime
 
 from nico_client.html_page.html_page import HtmlPage
 from nico_client.model.video import Video
-from nico_client.utils.time_utils import get_posix_now
 
 logger = logging.getLogger(__name__)
+
+KEY_MAP = {
+    'video_id': 'id',
+    'view_counter': 'views',
+    'mylist_counter': 'likes',
+    'first_retrieve': 'upload_time'
+}
 
 
 class Playlist(HtmlPage):
@@ -31,14 +35,12 @@ class Playlist(HtmlPage):
                 line = line[idx_start:-2]
                 for item in json.loads(line):
                     item_data = item['item_data']
-                    video = Video(
-                        id=item_data['video_id'],
-                        title=item_data['title'],
-                        views=int(item_data['view_counter']),
-                        likes=int(item_data['mylist_counter']),
-                        age=get_posix_now() - item_data['first_retrieve']
-                    )
-                    video.thumbnail_url = item_data['thumbnail_url']
+                    item_data['view_counter'] = int(item_data['view_counter'])
+                    item_data['mylist_counter'] = int(item_data['mylist_counter'])
+                    for key_old, key_new in KEY_MAP.items():
+                        item_data[key_new] = item_data[key_old]
+                    video = Video()
+                    video.setattrs(**item_data)
                     videos.append(video)
 
                 return videos
