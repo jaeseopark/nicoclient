@@ -1,9 +1,14 @@
 import json
+import logging
 from abc import ABC, abstractmethod
 
+import dateparser
 from bs4 import BeautifulSoup
 
 from nico_client.html_page.html_page import HtmlPage
+from nico_client.utils.time_utils import get_posix
+
+logging.getLogger('dateparser').setLevel(logging.CRITICAL)
 
 
 class VideoPage(HtmlPage):
@@ -50,6 +55,7 @@ class VideoPageInnerParserWithJson(VideoPageInnerParser):
         raise NotImplementedError('handle edge cases here')
 
     def map_video_attributes(self, json_object):
+
         return {
             'tags': [tag['name'] for tag in json_object['tags']],
             'description': json_object['video']['originalDescription'],
@@ -57,11 +63,12 @@ class VideoPageInnerParserWithJson(VideoPageInnerParser):
             'title': json_object['video']['title'],
             'thumbnail_url': json_object['video']['thumbnailURL'],
             'views': int(json_object['video']['viewCount']),
-            'likes': int(json_object['video']['mylistCount'])
+            'likes': int(json_object['video']['mylistCount']),
+            'upload_time': get_posix(dateparser.parse(json_object['video']['postedDateTime'])) - 32400
         }
 
     def line_to_json(self, line):
-        root_node = BeautifulSoup(line,'html.parser')
+        root_node = BeautifulSoup(line, 'html.parser')
         div_node = root_node.find('div', {'id': 'js-initial-watch-data'})
         json_string = div_node['data-api-data']
         return json.loads(json_string)
@@ -69,7 +76,7 @@ class VideoPageInnerParserWithJson(VideoPageInnerParser):
 
 class VideoPageInnerParserWithoutJson(VideoPageInnerParser):
     def get_video_info(self):
-        root_node = BeautifulSoup(self.html_string,'html.parser')
+        root_node = BeautifulSoup(self.html_string, 'html.parser')
         title_node = root_node.find('h1', {'class': 'VideoTitle'})
         user_node = root_node.find('div', {'class': 'VideoOwnerIcon'})
         user_id = user_node.find('a')['href'].split('/')[-1]
@@ -78,6 +85,7 @@ class VideoPageInnerParserWithoutJson(VideoPageInnerParser):
         view_count_node = root_node.find('span', {'class': "VideoViewCountMeta-counter"})
         like_count_node = root_node.find('span', {'class': "MylistCountMeta-counter"})
         description_node = root_node.find('p', {'class': 'VideoDescription-text'})
+        time_node = root_node.find('time', {'class': 'VideoUploadDateMeta-dateTimeLabel'})
         return {
             'tags': tags,
             'description': description_node.get_text(),
@@ -85,7 +93,8 @@ class VideoPageInnerParserWithoutJson(VideoPageInnerParser):
             'title': title_node.get_text(),
             'thumbnail_url': thumbnail_node['content'],
             'views': int(view_count_node.find('span').get_text().replace(',', '')),
-            'likes': int(like_count_node.find('span').get_text().replace(',', ''))
+            'likes': int(like_count_node.find('span').get_text().replace(',', '')),
+            'upload_time': get_posix(dateparser.parse(time_node.get_text())) - 32400
         }
 
     def to_tag_array(self, tag_node):
