@@ -45,12 +45,14 @@ class Trending(HtmlPage):
 
                 time_str = root_node.find('div', {'class': 'videoList01Wrap'}).find('span').string
                 time_obj = datetime.strptime(time_str, '%Y/%m/%d %H:%M')
+                upload_time = (get_posix(time_obj) - 32400)  # 32400 is the difference between UTC & JST
 
-                age_threshold = AGE_THRESHOLD_MAP[self.time_range]
-                age = get_posix_now() - (get_posix(time_obj) - 32400)
-                if self.new_videos_only and age > age_threshold:
-                    # Do not append if the video is more than a day old
-                    continue
+                if self.new_videos_only:
+                    age_threshold = AGE_THRESHOLD_MAP[self.time_range]
+                    age = get_posix_now() - upload_time
+                    if age > age_threshold:
+                        # Do not append if the video is more than a day/week/month old
+                        continue
 
                 title_node = root_node.find('p', {'class': 'itemTitle ranking'}).find('a')
 
@@ -59,7 +61,7 @@ class Trending(HtmlPage):
                     'title': title_node['title'],
                     'views': int(root_node.find('li', {'class': 'count view'}).find('span').string.replace(',', '')),
                     'likes': int(root_node.find('li', {'class': 'count mylist'}).find('span').string.replace(',', '')),
-                    'age': age
+                    'upload_time': upload_time
                 })
 
         return videos

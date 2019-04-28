@@ -11,13 +11,13 @@ logger = logging.getLogger(__name__)
 
 
 class Video(object):
-    def __init__(self, id=None, title=None, url=None, views=None, likes=None, age=None, *args, **kwargs):
+    def __init__(self, id=None, title=None, url=None, views=None, likes=None, upload_time=None, *args, **kwargs):
         self.id = id
         self.views = views
         self.likes = likes
         self.thumbnail_url = None
         self.title = title
-        self.age = age
+        self.upload_time = upload_time or -1
         self.tags = None
         self.description = None
         self.uploader_id = None

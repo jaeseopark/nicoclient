@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="nico_client",
-    version="1.0.46",
+    version="1.0.47",
     author="Jaeseo Park",
     author_email="jaeseopark@icloud.com",
     description="A python client to interact with nicovideo.jp",
@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/lekordable/nico_client",
     packages=setuptools.find_packages(exclude=["tests", "tests.*"]),
-    install_requires=['requests', 'nicopy', 'beautifulsoup4'],
+    install_requires=['requests', 'nicopy', 'beautifulsoup4', 'dateparser'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

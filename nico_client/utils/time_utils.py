@@ -7,4 +7,6 @@ def get_posix_now():
 
 
 def get_posix(datime_obj):
-    return int(time.mktime(datime_obj.utctimetuple()))
+    utc = datime_obj.utctimetuple()
+    t = time.mktime(utc)
+    return int(t)
