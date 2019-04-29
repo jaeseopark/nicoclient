@@ -1,4 +1,4 @@
-from nico_client.html_page.trending import Trending
+from nico_client.html_page.trending import Trending, get_trending_videos
 from tests import IntegrationTest
 
 
@@ -14,3 +14,8 @@ class TestDailyTrending(IntegrationTest):
             with self.subTest(time_range=time_range):
                 videos = Trending(time_range).get_videos()
                 self.assertGreater(len(videos), 0)
+
+    def test_get_trending_videos_with_min_likes(self):
+        videos1 = get_trending_videos('daily')
+        videos2 = get_trending_videos('daily', min_likes=100)
+        self.assertGreater(len(videos1), len(videos2))
