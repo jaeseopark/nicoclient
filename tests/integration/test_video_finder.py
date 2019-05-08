@@ -1,9 +1,10 @@
+import unittest
+
 from nico_client.core import video_finder
 from nico_client.model.video import Video
-from tests import IntegrationTest
 
 
-class TestVideoFinder(IntegrationTest):
+class TestVideoFinder(unittest.TestCase):
     def test_related_videos(self):
         for video_id in ['sm34775615', 'sm34734479']:
             with self.subTest(video_id=video_id):

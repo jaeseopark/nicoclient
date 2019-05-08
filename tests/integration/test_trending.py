@@ -1,8 +1,9 @@
+import unittest
+
 from nico_client.html_page.trending import Trending, get_trending_videos
-from tests import IntegrationTest
 
 
-class TestDailyTrending(IntegrationTest):
+class TestDailyTrending(unittest.TestCase):
     def test_get_trending_videos_all(self):
         for time_range in ['daily', 'weekly']:
             with self.subTest(time_range=time_range):

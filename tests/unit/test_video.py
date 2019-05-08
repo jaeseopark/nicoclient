@@ -1,8 +1,9 @@
+import unittest
+
 from nico_client.model.video import Video
-from tests import UnitTest
 
 
-class TestVideo(UnitTest):
+class TestVideo(unittest.TestCase):
     def test_find_references(self):
         video = Video(id='fake_id')
         video.description = "本家様【sm31229321】\n◆ Vocal：みけ( mylist/58924781 ) @rnike_san\n◆ Mix：藤( mylist/58622226 )@fujimameo\n◆Enc：らふどん(user/1896533)　@rfdn_0117"

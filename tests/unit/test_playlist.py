@@ -1,10 +1,12 @@
+import unittest
+
 from nico_client.html_page.playlist import Playlist
-from tests import UnitTest
+from tests import get_file_content_as_string
 
 
-class TestPlaylist(UnitTest):
+class TestPlaylist(unittest.TestCase):
     def test_get_videos(self):
-        raw_html = self.get_file_content_as_string('mylist.html')
+        raw_html = get_file_content_as_string('mylist.html')
         pl = Playlist(html_string=raw_html)
         videos = pl.get_videos()
         self.assertTrue(len(videos) > 0)
@@ -13,7 +15,7 @@ class TestPlaylist(UnitTest):
                 self.assertEqual(int, type(video.views))
 
     def test_get_owner_id(self):
-        raw_html = self.get_file_content_as_string('mylist.html')
+        raw_html = get_file_content_as_string('mylist.html')
         pl = Playlist(html_string=raw_html)
         owner_id = pl.get_owner_id()
         self.assertEqual('52479273', owner_id)
