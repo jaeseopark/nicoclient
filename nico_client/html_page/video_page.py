@@ -1,14 +1,10 @@
 import json
-import logging
 from abc import ABC, abstractmethod
 
-import dateparser
 from bs4 import BeautifulSoup
 
 from nico_client.html_page.html_page import HtmlPage
-from nico_client.utils.time_utils import get_posix
-
-logging.getLogger('dateparser').setLevel(logging.CRITICAL)
+from nico_client.utils.time_utils import str_to_posix
 
 
 class VideoPage(HtmlPage):
@@ -64,7 +60,7 @@ class VideoPageInnerParserWithJson(VideoPageInnerParser):
             'thumbnail_url': json_object['video']['thumbnailURL'],
             'views': int(json_object['video']['viewCount']),
             'likes': int(json_object['video']['mylistCount']),
-            'upload_time': get_posix(dateparser.parse(json_object['video']['postedDateTime'])) - 32400
+            'upload_time': str_to_posix(json_object['video']['postedDateTime']) - 32400
         }
 
     def line_to_json(self, line):
@@ -94,7 +90,7 @@ class VideoPageInnerParserWithoutJson(VideoPageInnerParser):
             'thumbnail_url': thumbnail_node['content'],
             'views': int(view_count_node.find('span').get_text().replace(',', '')),
             'likes': int(like_count_node.find('span').get_text().replace(',', '')),
-            'upload_time': get_posix(dateparser.parse(time_node.get_text())) - 32400
+            'upload_time': str_to_posix(time_node.get_text()) - 32400
         }
 
     def to_tag_array(self, tag_node):

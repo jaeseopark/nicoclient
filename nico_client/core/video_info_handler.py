@@ -1,27 +1,19 @@
 import json
 import logging
 
-import nicopy
-import dateparser
-
-from nico_client.html_page.html_page import PageError
 from nico_client.html_page.video_page import VideoPage
-
-logging.getLogger('dateparser').setLevel(logging.CRITICAL)
 
 logger = logging.getLogger(__name__)
 
 
-def populate_details(video, method='nicopy'):
+def populate_details(video, method='html_parser'):
     """
     Populates the attributes in the given video object.
     :param video: Video object to be populated
-    :param method: How the info will be retrieved. options = ['nicopy', 'html_parser']
+    :param method: How the info will be retrieved. options = ['html_parser']
     :return: None
     """
-    if method == 'nicopy':
-        info = get_info_via_nicopy(video.id)
-    elif method == 'html_parser':
+    if method == 'html_parser':
         info = VideoPage(id=video.id).get_video_info()
     else:
         raise AssertionError(f"invalid method='{method}'")
@@ -41,22 +33,3 @@ def __validate_info(json_object):
             missing.append(key)
     if len(missing) > 0:
         raise AssertionError(f"missing keys={json.dumps(missing)}")
-
-
-def get_info_via_nicopy(video_id):
-    from nico_client.utils.time_utils import get_posix
-
-    try:
-        info_raw = nicopy.get_video_info(video_id)
-        return {
-            'tags': [tag['tag'] for tag in info_raw.get('tags')],
-            'description': info_raw.get('description'),
-            'uploader_id': info_raw.get('user_id'),
-            'title': info_raw.get('title'),
-            'thumbnail_url': info_raw.get('thumbnail_url'),
-            'views': int(info_raw.get('view_counter')),
-            'likes': int(info_raw.get('mylist_counter')),
-            'upload_time': get_posix(dateparser.parse(info_raw.get('first_retrieve')))
-        }
-    except nicopy.ResponseFailError:
-        raise PageError

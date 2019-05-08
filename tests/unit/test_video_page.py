@@ -1,10 +1,12 @@
+import unittest
+
 from nico_client.html_page.video_page import VideoPage
-from tests import UnitTest
+from tests import get_file_content_as_string
 
 
-class TestVideoPage(UnitTest):
+class TestVideoPage(unittest.TestCase):
     def test_video_page_with_json_data(self):
-        html_string = self.get_file_content_as_string('video_with_json.html')
+        html_string = get_file_content_as_string('video_with_json.html')
         vp = VideoPage(html_string=html_string)
         info = vp.get_video_info()
         self.assertEqual(11, len(info['tags']))
@@ -16,7 +18,7 @@ class TestVideoPage(UnitTest):
         self.assertEqual('え？あぁ、そう。　歌ってみた－遊', info['title'])
 
     def test_video_page_with_json_data_english(self):
-        html_string = self.get_file_content_as_string('video_with_json_eng.html')
+        html_string = get_file_content_as_string('video_with_json_eng.html')
         vp = VideoPage(html_string=html_string)
         info = vp.get_video_info()
         self.assertEqual(4, len(info['tags']))
@@ -28,7 +30,7 @@ class TestVideoPage(UnitTest):
         self.assertEqual('All Night, the Idea of Two Sang it【Natsushiro Takaaki and nqrse】', info['title'])
 
     def test_video_page_with_json_but_no_tags(self):
-        html_string = self.get_file_content_as_string('video_with_json_but_no_tags.html')
+        html_string = get_file_content_as_string('video_with_json_but_no_tags.html')
         vp = VideoPage(html_string=html_string)
         info = vp.get_video_info()
         self.assertEqual(0, len(info['tags']))
@@ -40,7 +42,7 @@ class TestVideoPage(UnitTest):
         self.assertEqual('【オールスター合作】ニコ色のオールスター流星群', info['title'])
 
     def test_video_page_without_json_data(self):
-        html_string = self.get_file_content_as_string('video_without_json.html')
+        html_string = get_file_content_as_string('video_without_json.html')
         vp = VideoPage(html_string=html_string)
         info = vp.get_video_info()
         self.assertEqual(11, len(info['tags']))
