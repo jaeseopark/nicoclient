@@ -18,6 +18,7 @@ print(json.dumps(metadata, indent=2, ensure_ascii=False))
   "likes": 163,
   "thumbnail_url": "http://tn.smilevideo.jp/smile?i=34734479.81262",
   "title": "出来るだけ感情的に「ヘイトクライム」を歌いました。",
+  "uploader_id": "33765098",
   "tags": [
     "歌ってみた",
     "ヘイトクライム(さまぐら)",
@@ -27,8 +28,7 @@ print(json.dumps(metadata, indent=2, ensure_ascii=False))
     "ててて",
     "ボカロオリジナルを歌ってみた"
   ],
-  "description": "最後まで聴いてもらえると嬉しいです。素晴らしい原曲  sm33841308MIX　みけ　mylist/58924781　https://twitter.com/rnike_san 歌　ててて　mylist/41403147　https://twitter.com/tetete2525",
-  "uploader_id": "33765098"
+  "description": "最後まで聴いてもらえると嬉しいです。素晴らしい原曲  sm33841308MIX　みけ　mylist/58924781　https://twitter.com/rnike_san 歌　ててて　mylist/41403147　https://twitter.com/tetete2525"
 }
 ```
 
@@ -60,37 +60,36 @@ for video in videos:
 
 ### Get related videos
 
-1. When the video is a Vocaloid original:
-    ```python
-    related_videos = nico_client.get_related_videos('sm32076378')
-    print(json.dumps([v['title'] for v in related_videos], indent=2, ensure_ascii=False))
-    ```
-    ```json
-    [
-      "ドラマツルギー 歌ってみた【りぶ】",
-      "ドラマツルギー　歌ってみた【そらる】",
-      "【ウォルピス社】ドラマツルギーを歌ってみました【提供】",
-      "【浦島坂田船歌ってみたツアー】ドラマツルギー【うらたぬき】",
-      "【爽快に】ドラマツルギー 歌ってみた ver.Sou",
-      "☪『ドラマツルギー』を 歌ってみた。by天月",
-      ...
-    ]
-    ```
-    Returns the Utattemita videos for the given song.
-1. Otherwise:
-    ```python
-    related_videos = nico_client.get_related_videos('sm32103696')
-    print(json.dumps([v['title'] for v in related_videos], indent=2, ensure_ascii=False))
-    ```
-    ```json
-    [
-      "Marygold 歌ってみた【りぶ】",
-      "沙上の夢喰い少女 歌ってみた【りぶ】",
-      "BEAUTIFUL DREAMER 歌ってみた【りぶ】",
-      "夜と虹色 歌ってみた【りぶ】",
-      "Starduster 歌ってみた【りぶ】",
-      "ピエロ 歌ってみた【りぶ】",
-      ...
-    ]
-    ```
-    Returns other videos by the uploader (if the video description has a reference to the playlist)
+#### Use case 1
+
+If the video is a Vocaloid Original, then the function returns Utattemita videos.
+
+```python
+related_videos = nico_client.get_related_videos('sm32076378')
+print('\n'.join([v['title'] for v in related_videos]))
+
+# "ドラマツルギー 歌ってみた【りぶ】",
+# "ドラマツルギー　歌ってみた【そらる】",
+# "【ウォルピス社】ドラマツルギーを歌ってみました【提供】",
+# "【浦島坂田船歌ってみたツアー】ドラマツルギー【うらたぬき】",
+# "【爽快に】ドラマツルギー 歌ってみた ver.Sou",
+# "『ドラマツルギー』を 歌ってみた。by天月",
+# ...
+```
+
+#### Use case 2
+
+If the video is _NOT_ a Vocaloid Original, then the function returns other videos by the uploader.
+
+```python
+related_videos = nico_client.get_related_videos('sm32103696')
+print('\n'.join([v['title'] for v in related_videos]))
+
+# "Marygold 歌ってみた【りぶ】",
+# "沙上の夢喰い少女 歌ってみた【りぶ】",
+# "BEAUTIFUL DREAMER 歌ってみた【りぶ】",
+# "夜と虹色 歌ってみた【りぶ】",
+# "Starduster 歌ってみた【りぶ】",
+# "ピエロ 歌ってみた【りぶ】",
+# ...
+```
