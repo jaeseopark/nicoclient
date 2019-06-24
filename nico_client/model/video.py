@@ -62,7 +62,7 @@ class Video(object):
         self.tags = self.tags or []
         if '歌ってみた' in self.tags or 'Sang_it' in self.tags:
             self.video_type = VIDEO_TYPE_UTATTEMITA
-        elif 'Vocaloid' in self.tags:
+        elif 'Vocaloid' in self.tags or 'VOCALOID' in self.tags:
             self.video_type = VIDEO_TYPE_VOCALOID_ORG
         else:
             self.video_type = VIDEO_TYPE_UNKNOWN

@@ -1,11 +1,11 @@
 import logging
 from abc import ABC, abstractmethod
 
-from nico_client.core.video_info_handler import populate_details
+from nico_client.core.video_info_handler import get_metadata
 from nico_client.html_page.html_page import PageError
 from nico_client.html_page.playlist import Playlist
 from nico_client.html_page.search_page import UtattemitaSearchPage
-from nico_client.model.video import VIDEO_TYPE_UTATTEMITA, VIDEO_TYPE_VOCALOID_ORG, Video
+from nico_client.model.video import VIDEO_TYPE_VOCALOID_ORG, Video
 
 logger = logging.getLogger(__name__)
 
@@ -15,28 +15,20 @@ class VideoFinder(ABC):
         self.video = video
 
     @staticmethod
-    def get_related_videos(video):
+    def get_related_videos(video: Video):
         finder = VideoFinder.__get_finder_instance(video)
         return finder.get_related_videos_impl()
 
     @staticmethod
     def __get_finder_instance(video):
-        if video.video_type == VIDEO_TYPE_UTATTEMITA:
-            return VideoFinderUtattemita(video)
-        elif video.video_type == VIDEO_TYPE_VOCALOID_ORG:
+        if video.video_type == VIDEO_TYPE_VOCALOID_ORG:
             return VideoFinderVocaloidOriginal(video)
         else:
-            logger.info(f"video_type={video.video_type} has no corresponding VideoFinder; skipping")
-            return VideoFinderDummy(video)
+            return VideoFinderUtattemita(video)
 
     @abstractmethod
     def get_related_videos_impl(self):
         pass
-
-
-class VideoFinderDummy(VideoFinder):
-    def get_related_videos_impl(self):
-        return []
 
 
 class VideoFinderUtattemita(VideoFinder):
@@ -47,7 +39,7 @@ class VideoFinderUtattemita(VideoFinder):
             if ref.startswith('sm'):
                 referenced_video = Video(id=ref)
                 try:
-                    populate_details(referenced_video)
+                    get_metadata(referenced_video)
                     if referenced_video.video_type == VIDEO_TYPE_VOCALOID_ORG:
                         related_videos.append(referenced_video)
                     else:
@@ -71,25 +63,14 @@ class VideoFinderUtattemita(VideoFinder):
 class VideoFinderVocaloidOriginal(VideoFinder):
     def get_related_videos_impl(self):
         related_videos = []
-        search_results = UtattemitaSearchPage(self.video)
+        search_results = UtattemitaSearchPage(video=self.video)
         related_videos += search_results.get_videos()
         return related_videos
 
 
-def get_related_videos(video, sort_by=None, limit=None):
-    if not video.details_populated:
-        try:
-            populate_details(video)
-        except PageError as e:
-            logger.warning(f"PagerError with video_id={video.id} error='{str(e)}'; returning an empty array")
-            return []
+def get_related_videos(video_id:str):
+    metadata = get_metadata(video_id)
+    video = Video(id=video_id)
+    video.setattrs(**metadata)
 
-    related_videos = VideoFinder.get_related_videos(video)
-
-    if sort_by:
-        related_videos.sort(key=lambda x: vars(x)[sort_by], reverse=True)
-
-    if limit and limit < len(related_videos):
-        related_videos = related_videos[:limit - 1]
-
-    return related_videos
+    return VideoFinder.get_related_videos(video)

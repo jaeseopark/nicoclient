@@ -11,7 +11,7 @@ class TestDailyTrending(unittest.TestCase):
         videos = dt.get_videos()
         self.assertEqual(100, len(videos))
         for video in videos:
-            with self.subTest(video_id=video.id):
-                self.assertIsNotNone(video.id, 'id should not be None')
-                self.assertTrue(video.views > 0, 'video.views must be greater than 0')
-                self.assertTrue(video.likes > 0, 'video.likes must be greater than 0')
+            with self.subTest(video_id=video['id']):
+                self.assertIsNotNone(video['id'], 'id should not be None')
+                self.assertTrue(video['views'] > 0, 'video.views must be greater than 0')
+                self.assertTrue(video['likes'] > 0, 'video.likes must be greater than 0')

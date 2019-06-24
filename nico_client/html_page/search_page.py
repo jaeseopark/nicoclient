@@ -62,4 +62,4 @@ class UtattemitaSearchPage(HtmlPage):
         return video
 
     def get_videos(self):
-        return [self.__to_video(j) for j in self.__get_videos_as_json()]
+        return [vars(self.__to_video(j)) for j in self.__get_videos_as_json()]
