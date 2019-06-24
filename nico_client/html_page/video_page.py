@@ -34,7 +34,7 @@ class VideoPageInnerParser(ABC):
         elif '<h1 class="VideoTitle">' in html_string:
             cls = VideoPageInnerParserWithoutJson
         else:
-            raise NotImplementedError('not implemented yet')
+            raise NotImplementedError
         return cls(html_string)
 
     @abstractmethod
