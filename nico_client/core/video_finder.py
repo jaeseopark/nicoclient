@@ -36,17 +36,7 @@ class VideoFinderUtattemita(VideoFinder):
         related_videos = []
         for ref in self.video.find_references():
             logger.info(f"Evaluating ref={ref}")
-            if ref.startswith('sm'):
-                referenced_video = Video(id=ref)
-                try:
-                    get_metadata(referenced_video)
-                    if referenced_video.video_type == VIDEO_TYPE_VOCALOID_ORG:
-                        related_videos.append(referenced_video)
-                    else:
-                        logger.info(f"{referenced_video.id} is not a vocaloid original video; skipping")
-                except PageError:
-                    logger.info(f"PageError with video_id='{referenced_video.id}'; skipping")
-            elif ref.startswith('mylist/'):
+            if ref.startswith('mylist/'):
                 playlist_id = ref.split('/')[-1]
                 try:
                     p = Playlist(id=playlist_id)

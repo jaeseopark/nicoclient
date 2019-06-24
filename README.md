@@ -93,4 +93,4 @@ for video in videos:
       ...
     ]
     ```
-    Returns the videos referenced in the description and other videos uploaded by the same user.
+    Returns other videos by the uploader (if the video description has a reference to the playlist)
