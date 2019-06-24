@@ -67,9 +67,9 @@ class Trending(HtmlPage):
         return videos
 
     def get_videos(self):
-        return [Video(**v) for v in self.to_json()]
+        return self.to_json()
 
 
 def get_trending_videos(time_range='daily', min_likes=0):
     vids = Trending(time_range=time_range).get_videos()
-    return list(filter(lambda v: v.likes >= min_likes, vids))
+    return list(filter(lambda v: v['likes'] >= min_likes, vids))

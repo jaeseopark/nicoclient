@@ -8,7 +8,7 @@ class TestVideoPage(unittest.TestCase):
     def test_video_page_with_json_data(self):
         html_string = get_file_content_as_string('video_with_json.html')
         vp = VideoPage(html_string=html_string)
-        info = vp.get_video_info()
+        info = vp.get_video_metadata()
         self.assertEqual(11, len(info['tags']))
         self.assertTrue('他人の価値観なんて私は知らないの' in info['description'])
         self.assertEqual(349705, info['views'])
@@ -20,7 +20,7 @@ class TestVideoPage(unittest.TestCase):
     def test_video_page_with_json_data_english(self):
         html_string = get_file_content_as_string('video_with_json_eng.html')
         vp = VideoPage(html_string=html_string)
-        info = vp.get_video_info()
+        info = vp.get_video_metadata()
         self.assertEqual(4, len(info['tags']))
         self.assertTrue('被害妄想携帯女子' in info['description'])
         self.assertEqual(1730597, info['views'])
@@ -32,7 +32,7 @@ class TestVideoPage(unittest.TestCase):
     def test_video_page_with_json_but_no_tags(self):
         html_string = get_file_content_as_string('video_with_json_but_no_tags.html')
         vp = VideoPage(html_string=html_string)
-        info = vp.get_video_info()
+        info = vp.get_video_metadata()
         self.assertEqual(0, len(info['tags']))
         self.assertTrue('キワミパートでお借りした動画' in info['description'])
         self.assertEqual(462144, info['views'])
@@ -44,7 +44,7 @@ class TestVideoPage(unittest.TestCase):
     def test_video_page_without_json_data(self):
         html_string = get_file_content_as_string('video_without_json.html')
         vp = VideoPage(html_string=html_string)
-        info = vp.get_video_info()
+        info = vp.get_video_metadata()
         self.assertEqual(11, len(info['tags']))
         self.assertTrue('この楽曲が収録されているアルバム' in info['description'])
         self.assertEqual(118795, info['views'])

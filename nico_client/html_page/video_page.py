@@ -18,7 +18,7 @@ class VideoPage(HtmlPage):
             raise AssertionError('Need at least one parameter value')
         self.id = id
 
-    def get_video_info(self):
+    def get_video_metadata(self):
         inner_parser = VideoPageInnerParser.get_inner_parser(self.html_string)
         return inner_parser.get_video_info()
 
