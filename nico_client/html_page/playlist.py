@@ -39,9 +39,7 @@ class Playlist(HtmlPage):
                     item_data['mylist_counter'] = int(item_data['mylist_counter'])
                     for key_old, key_new in KEY_MAP.items():
                         item_data[key_new] = item_data[key_old]
-                    video = Video()
-                    video.setattrs(**item_data)
-                    videos.append(video)
+                    videos.append(item_data)
 
                 return videos
 
