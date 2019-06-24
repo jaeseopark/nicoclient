@@ -16,7 +16,6 @@ setuptools.setup(
     install_requires=['requests', 'beautifulsoup4'],
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
         "Natural Language :: English"
     ]
 )
