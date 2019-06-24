@@ -6,22 +6,22 @@ from nico_client.html_page.video_page import VideoPage
 logger = logging.getLogger(__name__)
 
 
-def populate_details(video, method='html_parser'):
+def get_metadata(video_id: str, method='html_parser'):
     """
     Populates the attributes in the given video object.
-    :param video: Video object to be populated
+    :param video: dictionary to be populated
     :param method: How the info will be retrieved. options = ['html_parser']
     :return: None
     """
     if method == 'html_parser':
-        info = VideoPage(id=video.id).get_video_info()
+        metadata = VideoPage(id=video_id).get_video_metadata()
     else:
         raise AssertionError(f"invalid method='{method}'")
-    __validate_info(info)
-    video.setattrs(**info)
+    __validate_fields(metadata)
+    return metadata
 
 
-def __validate_info(json_object):
+def __validate_fields(json_object):
     """
     Ensure that the given json object has all the required keys. Throws AssertionError if a key (or keys) is missing.
     :param json_object: the JSON object to be evaluated

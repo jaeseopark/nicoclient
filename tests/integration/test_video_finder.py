@@ -1,13 +1,9 @@
 import unittest
 
 from nico_client.core import video_finder
-from nico_client.model.video import Video
 
 
 class TestVideoFinder(unittest.TestCase):
-    def test_related_videos(self):
-        for video_id in ['sm34775615', 'sm34734479']:
-            with self.subTest(video_id=video_id):
-                video = Video(id=video_id)
-                videos = video_finder.get_related_videos(video)
-                self.assertTrue(len(videos) > 1)
+    def test_related_videos_vocaloid_org(self):
+        videos = video_finder.get_related_videos('sm32076378')
+        self.assertTrue(len(videos) > 1)

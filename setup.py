@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="nico_client",
-    version="1.0.49",
+    version="1.0.50",
     author="Jaeseo Park",
     author_email="jaeseopark@icloud.com",
     description="A python client to interact with nicovideo.jp",
@@ -16,7 +16,6 @@ setuptools.setup(
     install_requires=['requests', 'beautifulsoup4'],
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
         "Natural Language :: English"
     ]
 )
