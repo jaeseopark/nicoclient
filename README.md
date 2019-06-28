@@ -2,6 +2,12 @@
 
 A python client to interact with [nicovideo.jp](https://nicovideo.jp).
 
+## Installation
+
+```bash
+pip install nico_client
+```
+
 ## Features
 
 ### Get metadata
