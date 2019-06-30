@@ -6,6 +6,6 @@ install:
   - pip install -r requirements.txt
   - pip install coverage python-coveralls
 script:
-  - coverage run test_runner.py
+  - coverage run --source=nico_client/ test_runner.py
 after_success:
   - coveralls
