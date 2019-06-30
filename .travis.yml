@@ -2,4 +2,6 @@ language: python
 dist: xenial
 python:
   - "3.7"
-script: python -m unittest discover
+script:
+  - python -m unittest discover
+  - codecov
