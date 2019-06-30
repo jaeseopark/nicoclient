@@ -1,5 +1,7 @@
 # nico_client
 
+[![Build Status](https://travis-ci.com/jaeseopark/nico_client.svg?branch=master)](https://travis-ci.com/jaeseopark/nico_client)
+
 A python client to interact with [nicovideo.jp](https://nicovideo.jp).
 
 ## Installation
