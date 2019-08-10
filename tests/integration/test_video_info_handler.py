@@ -1,6 +1,6 @@
 import unittest
 
-from nico_client import get_metadata
+from nicoclient import get_metadata
 
 
 class TestVideoInfoHandler(unittest.TestCase):

@@ -1,6 +1,6 @@
 import unittest
 
-from nico_client.html_page.video_page import VideoPage
+from nicoclient.html_page.video_page import VideoPage
 from tests import get_file_content_as_string
 
 

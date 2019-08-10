@@ -1,13 +1,13 @@
-# nico_client
+# nicoclient
 
-[![Build Status](https://travis-ci.com/jaeseopark/nico_client.svg?branch=master)](https://travis-ci.com/jaeseopark/nico_client) ![Coveralls github](https://img.shields.io/coveralls/github/jaeseopark/nico_client.svg) ![PyPI](https://img.shields.io/pypi/v/nico_client.svg)
+[![Build Status](https://travis-ci.com/jaeseopark/nicoclient.svg?branch=master)](https://travis-ci.com/jaeseopark/nicoclient) ![Coveralls github](https://img.shields.io/coveralls/github/jaeseopark/nicoclient.svg) ![PyPI](https://img.shields.io/pypi/v/nicoclient.svg)
 
 A python client to interact with [nicovideo.jp](https://nicovideo.jp).
 
 ## Installation
 
 ```bash
-pip install nico_client
+pip install nicoclient
 ```
 
 ## Features
@@ -15,7 +15,7 @@ pip install nico_client
 ### Get metadata
 
 ```python
-metadata = nico_client.get_metadata('sm34734479')
+metadata = nicoclient.get_metadata('sm34734479')
 print(json.dumps(metadata, indent=2, ensure_ascii=False))
 ```
 
@@ -43,7 +43,7 @@ print(json.dumps(metadata, indent=2, ensure_ascii=False))
 ### Get trending videos
 
 ```python
-videos = nico_client.get_trending_videos()
+videos = nicoclient.get_trending_videos()
 for video in videos:
     print(f"'{video['id']}' has {video['views']} views and {video['likes']} likes")
 
@@ -56,7 +56,7 @@ for video in videos:
 ### Get videos in a playlist
 
 ```python
-videos = nico_client.get_videos_by_playlist_id('58924781')
+videos = nicoclient.get_videos_by_playlist_id('58924781')
 for video in videos:
     print(f"'{video['id']}' has {video['views']} views and {video['likes']} likes")
 
@@ -73,7 +73,7 @@ for video in videos:
 If the video is a Vocaloid Original, then the function returns Utattemita videos.
 
 ```python
-related_videos = nico_client.get_related_videos('sm32076378')
+related_videos = nicoclient.get_related_videos('sm32076378')
 print('\n'.join([v['title'] for v in related_videos]))
 
 # "ドラマツルギー 歌ってみた【りぶ】",
@@ -90,7 +90,7 @@ print('\n'.join([v['title'] for v in related_videos]))
 If the video is _NOT_ a Vocaloid Original, then the function returns other videos by the uploader.
 
 ```python
-related_videos = nico_client.get_related_videos('sm32103696')
+related_videos = nicoclient.get_related_videos('sm32103696')
 print('\n'.join([v['title'] for v in related_videos]))
 
 # "Marygold 歌ってみた【りぶ】",

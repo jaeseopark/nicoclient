@@ -1,8 +1,8 @@
 import json
 import logging
 
-from nico_client.html_page.html_page import HtmlPage
-from nico_client.model.video import Video
+from nicoclient.html_page.html_page import HtmlPage
+from nicoclient.model.video import Video
 
 logger = logging.getLogger(__name__)
 

@@ -1,6 +1,6 @@
 import unittest
 
-from nico_client.model.video import Video
+from nicoclient.model.video import Video
 
 
 class TestVideo(unittest.TestCase):

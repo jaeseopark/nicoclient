@@ -1,11 +1,11 @@
 import logging
 from abc import ABC, abstractmethod
 
-from nico_client.core.video_info_handler import get_metadata
-from nico_client.html_page.html_page import PageError
-from nico_client.html_page.playlist import Playlist
-from nico_client.html_page.search_page import UtattemitaSearchPage
-from nico_client.model.video import VIDEO_TYPE_VOCALOID_ORG, Video
+from nicoclient.core.video_info_handler import get_metadata
+from nicoclient.html_page.html_page import PageError
+from nicoclient.html_page.playlist import Playlist
+from nicoclient.html_page.search_page import UtattemitaSearchPage
+from nicoclient.model.video import VIDEO_TYPE_VOCALOID_ORG, Video
 
 logger = logging.getLogger(__name__)
 
