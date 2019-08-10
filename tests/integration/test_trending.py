@@ -1,6 +1,6 @@
 import unittest
 
-from nico_client.html_page.trending import Trending, get_trending_videos
+from nicoclient.html_page.trending import Trending, get_trending_videos
 
 
 class TestDailyTrending(unittest.TestCase):

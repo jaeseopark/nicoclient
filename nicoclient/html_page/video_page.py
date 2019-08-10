@@ -3,8 +3,8 @@ from abc import ABC, abstractmethod
 
 from bs4 import BeautifulSoup
 
-from nico_client.html_page.html_page import HtmlPage
-from nico_client.utils.time_utils import str_to_posix
+from nicoclient.html_page.html_page import HtmlPage
+from nicoclient.utils.time_utils import str_to_posix
 
 
 class VideoPage(HtmlPage):

@@ -3,8 +3,8 @@ from datetime import datetime
 
 from bs4 import BeautifulSoup, Tag
 
-from nico_client.html_page.html_page import HtmlPage
-from nico_client.utils.time_utils import get_posix, get_posix_now
+from nicoclient.html_page.html_page import HtmlPage
+from nicoclient.utils.time_utils import get_posix, get_posix_now
 
 logger = logging.getLogger(__name__)
 

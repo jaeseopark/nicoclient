@@ -1,6 +1,6 @@
 import unittest
 
-from nico_client.html_page.trending import Trending
+from nicoclient.html_page.trending import Trending
 from tests import get_file_content_as_string
 
 

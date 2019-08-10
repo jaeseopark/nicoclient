@@ -1,6 +1,6 @@
 import unittest
 
-from nico_client.core import video_finder
+from nicoclient.core import video_finder
 
 
 class TestVideoFinder(unittest.TestCase):
