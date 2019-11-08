@@ -1,0 +1,28 @@
+name: Upload Python Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Update setup.py
+      run: GIT_TAG=$(cut -d'/' -f3 <<< "$GIT_REF") && sed -i "s/VERSION_SUBSTITUTION/${GIT_TAG}/g" setup.py && cat setup.py
+      env:
+        GIT_REF: ${{ github.ref }}
+    - name: Install wheel
+      run: pip install wheel
+    - name: Build package
+      run: python setup.py sdist bdist_wheel
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_TOKEN }}
