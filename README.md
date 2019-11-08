@@ -1,6 +1,6 @@
 # nicoclient
 
-[![Build Status](https://travis-ci.com/jaeseopark/nicoclient.svg?branch=master)](https://travis-ci.com/jaeseopark/nicoclient) [![Coverage Status](https://coveralls.io/repos/github/jaeseopark/nicoclient/badge.svg?branch=master)](https://coveralls.io/github/jaeseopark/nicoclient?branch=master) ![PyPI](https://img.shields.io/pypi/v/nicoclient.svg)
+[![codecov](https://codecov.io/gh/jaeseopark/nicoclient/branch/master/graph/badge.svg)](https://codecov.io/gh/jaeseopark/nicoclient) ![PyPI](https://img.shields.io/pypi/v/nicoclient.svg)
 
 A python client to interact with [nicovideo.jp](https://nicovideo.jp).
 
