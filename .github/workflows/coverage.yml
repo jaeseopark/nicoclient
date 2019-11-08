@@ -16,6 +16,8 @@ jobs:
       run: |
         pip install -r requirements.txt
         pip install coverage pytest
+    - name: Test
+      run: coverage run --source=nicoclient/ -m pytest
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
