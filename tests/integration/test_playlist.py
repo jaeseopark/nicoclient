@@ -1,9 +1,9 @@
 import unittest
 
-from nicoclient.html_page.playlist import Playlist
+from nicoclient.html_page.playlist import PlaylistPage
 
 
 class TestPlaylist(unittest.TestCase):
     def test_get_videos(self):
-        p = Playlist(id='19160554')
-        self.assertGreater(len(p.videos), 0)
+        plpage = PlaylistPage(id='19160554')
+        self.assertGreater(len(plpage.playlist.videos), 0)

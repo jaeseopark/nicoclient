@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from dateutil import parser as dateutil_parser
 
 from nicoclient.html_page.html_page import HtmlPage
+from nicoclient.model.playlist import Playlist
 from nicoclient.model.video import Video
 
 logger = logging.getLogger("nicoclient")
@@ -102,20 +103,25 @@ def get_html_parser(html_string: str) -> Parser:
     raise RuntimeError("Cannot find any parsers for the given html string")
 
 
-class Playlist(HtmlPage):
-    owner_id: str
-    name: str
-    videos: List[Video]
+class PlaylistPage(HtmlPage):
+    playlist: Playlist
 
-    def __init__(self, html_string=None, id=None):
-        HtmlPage.__init__(self, html_string=html_string, url=f"https://www.nicovideo.jp/mylist/{id}")
+    def __init__(self, id=None):
+        HtmlPage.__init__(self, url=f"https://www.nicovideo.jp/mylist/{id}")
         self.id = id
         self._parse()
 
     def _parse(self):
         parser = get_html_parser(self.html_string)
-        self.owner_id, self.name, self.videos = parser.execute(self.html_string)
+        owner_id, name, videos = parser.execute(self.html_string)
+        self.playlist = Playlist(
+            id=self.id,
+            name=name,
+            owner_id=owner_id,
+            videos=videos,
+            is_monitored=False
+        )
 
 
 def get_playlist(playlist_id: str) -> Playlist:
-    return Playlist(id=playlist_id)
+    return PlaylistPage(id=playlist_id).playlist
