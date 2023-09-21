@@ -64,7 +64,10 @@ class NicoSearchApiV2Client:
 
 
 def search_utattemita_videos(video_id: str) -> List[Video]:
-    return list(NicoSearchApiV2Client.search(f"{video_id} 歌ってみた"))
+    videos = list(NicoSearchApiV2Client.search(f"{video_id} 歌ってみた"))
+    for video in videos:
+        video.parent_video_id = video_id
+    return videos
 
 
 search_daily_trending_utatttemita_videos = NicoSearchApiV2Client.search_daily_trending
