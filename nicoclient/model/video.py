@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class VideoThumbnail(BaseModel):
+class Video(BaseModel):
     id: str
     title: str
     views: int
@@ -12,8 +12,5 @@ class VideoThumbnail(BaseModel):
     is_accessible: bool
     timestamp: int  # epoch format
     thumbnail_url: str = None
-
-
-class Video(VideoThumbnail):
     parent_video_id: Optional[str] = None
-    description: str
+    description: Optional[str] = None

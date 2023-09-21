@@ -51,14 +51,15 @@ class NicoSearchApiV2Client:
             )
 
     @staticmethod
-    def search_daily_trending(min_likes=0):
+    def search_daily_trending(min_likes=0, limit=_SEARCH_LIMIT):
         yesterday = datetime.now() - timedelta(1)
         return list(NicoSearchApiV2Client.search(
             query="歌ってみた",
             param_override={
                 "targets": "tagsExact",
                 "filters[startTime][gte]": yesterday.strftime("%Y-%m-%dT%H:%M:%S+00:00"),
-                "filters[mylistCounter][gte]": min_likes
+                "filters[mylistCounter][gte]": min_likes,
+                "_limit": limit
             }
         ))
 
