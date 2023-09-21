@@ -18,7 +18,6 @@ def preload(html_string: str) -> Tuple[str, str, List[Video]]:
         'view_counter': 'views',
         'mylist_counter': 'likes',
         'first_retrieve': 'timestamp',
-        'last_res_body': 'description',
         'length_seconds': 'duration'
     }
 
@@ -68,7 +67,6 @@ def initial_userpage(html_string: str) -> Tuple[str, str, List[Video]]:
                     timestamp=dateutil_parser.parse(video["registeredAt"]).timestamp(),
                     thumbnail_url=video["thumbnail"]["url"],
                     is_accessible=True,  # assume accessible by default
-                    description=video["shortDescription"]
                 )
 
     def get_owner() -> str:
