@@ -1,6 +1,5 @@
 import unittest
 
-# from nicoclient import get_video_by_id
 from nicoclient.core.lookup import get_video_by_id
 
 
