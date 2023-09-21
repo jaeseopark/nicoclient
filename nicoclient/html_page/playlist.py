@@ -106,7 +106,7 @@ def get_html_parser(html_string: str) -> Parser:
 class PlaylistPage(HtmlPage):
     playlist: Playlist
 
-    def __init__(self, id=None):
+    def __init__(self, id: str):
         HtmlPage.__init__(self, url=f"https://www.nicovideo.jp/mylist/{id}")
         self.id = id
         self._parse()
