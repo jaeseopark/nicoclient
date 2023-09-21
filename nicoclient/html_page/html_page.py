@@ -6,12 +6,14 @@ import requests
 
 
 class HtmlPage(ABC):
-    def __init__(self, html_string=None, url=None, headers={}, expected_codes=[200]):
+    def __init__(self, html_string=None, url=None, headers=None, expected_codes=None):
+        assert html_string or url
         self.html_string = html_string
         self.status_code = None
 
-        if url and html_string is None:
-            response = requests.get(url=url, headers=headers)
+        if html_string is None:
+            expected_codes = expected_codes or [200]
+            response = requests.get(url=url, headers=headers or dict())
             self.status_code = response.status_code
             if response.status_code in expected_codes:
                 self.html_string = str(response.text)

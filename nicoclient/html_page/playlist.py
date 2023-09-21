@@ -1,63 +1,121 @@
 import json
 import logging
+from typing import List, Callable, Tuple
+
+from bs4 import BeautifulSoup
+from dateutil import parser as dateutil_parser
 
 from nicoclient.html_page.html_page import HtmlPage
 from nicoclient.model.video import Video
 
-logger = logging.getLogger(__name__)
-
-KEY_MAP = {
-    'video_id': 'id',
-    'view_counter': 'views',
-    'mylist_counter': 'likes',
-    'first_retrieve': 'upload_time'
-}
+logger = logging.getLogger("nicoclient")
 
 
-class Playlist(HtmlPage):
-    def __init__(self, html_string=None, id=None):
-        if html_string:
-            HtmlPage.__init__(self, html_string=html_string)
-        elif id:
-            url = f"https://www.nicovideo.jp/mylist/{id}"
-            HtmlPage.__init__(self, url=url)
-        else:
-            raise AssertionError('Need at least one parameter value')
-        self.id = id
-        self.__owner = None
+def preload(html_string: str) -> Tuple[str, str, List[Video]]:
+    key_map = {
+        'video_id': 'id',
+        'view_counter': 'views',
+        'mylist_counter': 'likes',
+        'first_retrieve': 'timestamp',
+        'last_res_body': 'description',
+        'length_seconds': 'duration'
+    }
 
-    def get_videos(self):
-        logger.info(f"Getting videos... playlist_id={self.id}")
-        videos = []
-        for line in [line.strip() for line in self.html_string.split('\n')]:
+    def get_videos():
+        for line in [line.strip() for line in html_string.split('\n')]:
             if line.startswith('Mylist.preload'):
                 idx_start = line.find('[')
                 line = line[idx_start:-2]
                 for item in json.loads(line):
                     item_data = item['item_data']
+                    item_data["is_accessible"] = True
                     item_data['view_counter'] = int(item_data['view_counter'])
                     item_data['mylist_counter'] = int(item_data['mylist_counter'])
-                    for key_old, key_new in KEY_MAP.items():
+                    for key_old, key_new in key_map.items():
                         item_data[key_new] = item_data[key_old]
-                    videos.append(item_data)
+                    yield Video(**item_data)
 
-                return videos
+    def get_owner():
+        for line in html_string.split('\n'):
+            if line.strip().startswith('mylist_owner: { user_id:'):
+                return line.split(',')[0].split(':')[-1].strip()
 
-        raise RuntimeError(f"keyword 'Mylist.preload' not found in HTML string playlist_id={self.id}")
+    def get_name() -> str:
+        return f"Playlist"  # TODO: use regex
 
-    def get_owner_id(self):
-        if not self.__owner:
-            found = False
-            logger.info(f"Retrieving owner info... playlist_id={self.id}")
-            for line in self.html_string.split('\n'):
-                if line.strip().startswith('mylist_owner: { user_id:'):
-                    self.__owner = line.split(',')[0].split(':')[-1].strip()
-                    found = True
-            if not found:
-                logger.warning(f'Owner not found playlist_id={self.id} status_code={self.status_code}')
-        return self.__owner
+    return get_owner(), get_name(), list(get_videos())
 
 
-def get_videos_by_playlist_id(playlist_id):
-    p = Playlist(id=playlist_id)
-    return p.get_videos()
+def initial_userpage(html_string: str) -> Tuple[str, str, List[Video]]:
+    soup = BeautifulSoup(html_string, features="html.parser")
+    element = soup.find(id="js-initial-userpage-data")
+    json_string = element.get("data-initial-data")
+    json_object = json.loads(json_string)
+    nvapis = json_object['nvapi']
+
+    def get_videos():
+        for nvapi in nvapis:
+            for item in nvapi['body']['data']['mylist']['items']:
+                video = item['video']
+                yield Video(
+                    id=video["id"],
+                    uploader_id=video["owner"]["id"],
+                    title=video["title"],
+                    views=video["count"]["view"],
+                    likes=video["count"]["mylist"],
+                    duration=video["duration"],
+                    timestamp=dateutil_parser.parse(video["registeredAt"]).timestamp(),
+                    thumbnail_url=video["thumbnail"]["url"],
+                    is_accessible=True,  # assume accessible by default
+                    description=video["shortDescription"]
+                )
+
+    def get_owner() -> str:
+        for nvapi in nvapis:
+            return nvapi["body"]["data"]["mylist"]["owner"]["id"]
+
+    def get_name() -> str:
+        for nvapi in nvapis:
+            return nvapi["body"]["data"]["mylist"]["name"]
+
+    return get_owner(), get_name(), list(get_videos())
+
+
+class Parser:
+    def __init__(self, execute):
+        self.execute: Callable[[str], Tuple[str, str, List[Video]]] = execute
+
+
+_PARSERS = [
+    (lambda html_string: "Mylist.preload" in html_string, Parser(preload)),
+    (lambda html_string: "js-initial-userpage-data" in html_string, Parser(initial_userpage)),
+    # (lambda html_string: '<script type="application/ld+json">' in html_string, Parser(application_ld_json))
+]
+
+
+def get_html_parser(html_string: str) -> Parser:
+    for predicate, parser in _PARSERS:
+        if predicate(html_string):
+            logger.info(f"parser found; parser_name={parser.execute.__name__}")
+            return parser
+
+    raise RuntimeError("Cannot find any parsers for the given html string")
+
+
+class Playlist(HtmlPage):
+    owner_id: str
+    name: str
+    videos: List[Video]
+
+    def __init__(self, html_string=None, id=None):
+        HtmlPage.__init__(self, html_string=html_string, url=f"https://www.nicovideo.jp/mylist/{id}")
+        self.id = id
+        self._parse()
+
+    def _parse(self):
+        parser = get_html_parser(self.html_string)
+        self.owner_id, self.name, self.videos = parser.execute(self.html_string)
+
+
+def get_playlist(playlist_id: str) -> Playlist:
+    return Playlist(id=playlist_id)

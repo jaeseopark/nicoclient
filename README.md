@@ -12,11 +12,10 @@ pip install nicoclient
 
 ## Features
 
-### Get metadata
+### Get video metadata
 
 ```python
-metadata = nicoclient.get_metadata('sm34734479')
-print(json.dumps(metadata, indent=2, ensure_ascii=False))
+metadata = nicoclient.get_video('sm34734479')
 ```
 
 ```json
@@ -27,15 +26,6 @@ print(json.dumps(metadata, indent=2, ensure_ascii=False))
   "thumbnail_url": "http://tn.smilevideo.jp/smile?i=34734479.81262",
   "title": "出来るだけ感情的に「ヘイトクライム」を歌いました。",
   "uploader_id": "33765098",
-  "tags": [
-    "歌ってみた",
-    "ヘイトクライム(さまぐら)",
-    "さまぐら",
-    "檀上大空",
-    "みけ（歌い手）",
-    "ててて",
-    "ボカロオリジナルを歌ってみた"
-  ],
   "description": "最後まで聴いてもらえると嬉しいです。素晴らしい原曲  sm33841308MIX　みけ　mylist/58924781　https://twitter.com/rnike_san 歌　ててて　mylist/41403147　https://twitter.com/tetete2525"
 }
 ```
@@ -43,7 +33,7 @@ print(json.dumps(metadata, indent=2, ensure_ascii=False))
 ### Get trending videos
 
 ```python
-videos = nicoclient.get_trending_videos()
+videos = nicoclient.get_daily_trending_utattemita_videos()
 for video in videos:
     print(f"'{video['id']}' has {video['views']} views and {video['likes']} likes")
 ```
@@ -57,9 +47,9 @@ for video in videos:
 ### Get videos in a playlist
 
 ```python
-videos = nicoclient.get_videos_by_playlist_id('58924781')
-for video in videos:
-    print(f"'{video['id']}' has {video['views']} views and {video['likes']} likes")
+playlist = nicoclient.get_playlist('58924781')
+for video in playlist.videos:
+    print(f"'{video.id}' has {video.views} views and {video.likes} likes")
 ```
 ```
 'sm29118726' has 1104 views and 28 likes
