@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
-from nicomirror.model.video import VideoThumbnail
+from nicoclient.model.video import VideoThumbnail
 
 
 class Playlist(BaseModel):
